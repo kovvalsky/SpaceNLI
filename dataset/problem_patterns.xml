@@ -1,0 +1,2341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- <!DOCTYPE fracas-problems SYSTEM "fracas-problems.dtd"> -->
+<?xml-stylesheet type="text/xsl" href="fracas-problems-to-html.xsl"?>
+
+<fracas-problems>
+
+<comment class="intro">
+=================================================================================
+THE NATURAL LANGUAGE INFERENCE FOR SPATIAL REASONING
+=================================================================================
+"x" in @status means to eXclude the pattern during the generation process.
+ids are integers followed with optional letters
+</comment>
+
+<group seed="2" ent_type="directional">
+	<problem id="2" label="entailment" src="Nam:1995:Diss" cat="symmetric locative" exp="across, back">
+		<ex>The boy walked across the street, and returned back immediately
+			The boy walked across the street twice</ex>
+		<PT>{NP1} walked across {NP2}, and returned back {immediately_r_01}
+			{NP1} walked across {NP2} {_at_least} twice</PT>
+	</problem>
+	<problem id="3" label="neutral" src="Nam:1995:Diss" cat="asymmetric locative" exp="back, into">
+		<ex>The boy walked into the room, and came back immediately
+			The boy walked into the room twice</ex>
+		<PT>{NP1} walked into {NP3}, and came back {immediately_r_01}
+			{NP1} walked into {NP3} {_at_least} twice</PT>
+	</problem>
+	<BL>immediately_r_01 not in ["now", "forthwith"]</BL>
+	<FT>NP1[+det]; NP2[+det]; NP3[+det]</FT>
+	<SR>walk_across(NP1,NP2); walk_into(NP1,NP3)</SR>
+</group>
+
+
+<problem id="4" label="neutral" src="YW" cat="symmetric locative" ent_type="directional" exp="across, back">
+	<ex>The boy walked across the street twice
+		The boy walked across the street, and returned back</ex>
+	<PT>{NP1} walked across {NP2} {_at_least} twice
+		{NP1} walked across {NP2}, and returned back</PT>
+	<FT>NP1[+det]; NP2[+det]</FT>
+	<SR>walk_across(NP1,NP2)</SR>
+</problem>
+
+<!-- <problem id="5" label="neutral" src="YW" status="x" exp="back">
+	<ex>The boy left the room, and came back immediately
+		The boy left the room twice</ex>
+	<note src="LA">Could this be contradiction?</note>
+</problem> -->
+
+
+<group seed="7" ent_type="argument orientation">
+	<problem id="7" label="entailment" src="LA" exp="in">
+		<ex>John was running in the park
+			John was in the park</ex>
+		<PT>{NP1} was running in {NP2}
+			{NP1} was in {NP2}</PT>
+		<SR>run_in(NP1,NP2)</SR>
+	</problem>
+	<problem id="7a" label="contradiction" src="LA" exp="in">
+		<ex>John was absent in the park
+			John was in the park</ex>
+		<PT>{NP1} was absent in {NP2}
+			{NP1} was in {NP2}</PT>
+		<SR>absent_in(NP1,NP2)</SR>
+	</problem>
+	<problem id="7b" label="neutral" src="LA" exp="in">
+		<ex>John wanted to be in the park
+			John was in the park</ex>
+		<PT>{NP1} wanted to be in {NP2}
+			{NP1} was in {NP2}</PT>
+		<SR>want(NP1)</SR>
+	</problem>
+	<FT>NP1[+det]; NP2[+det]</FT>
+	<SR>in(NP1,NP2)</SR>
+</group>
+
+<!-- <problem id="8" label="neutral" rel="7">
+	<ex>John was not running in the park
+		John was in the park</ex>
+	<note>wide scope for "not"</note>
+</problem> -->
+
+<group seed="9" ent_type="argument orientation">
+	<problem id="9" label="entailment" exp="in">
+		<ex>John saw Mary in the garden
+			Mary was in the garden</ex>
+		<PT>{NP1} saw {NP2} in {NP3}
+			{NP2} was in {NP3}</PT>
+		<SR>in(NP2,NP3)</SR>
+	</problem>
+	<problem id="9a" label="neutral" src="YW" exp="in">
+		<ex>John mentioned Mary in the garden
+			Mary was in the garden</ex>
+		<PT>{NP1} mentioned {NP2} in {NP3}
+			{NP2} was in {NP3}</PT>
+		<SR>mention(NP1,NP2);  in(NP2,NP3);  in(NP1,NP3)</SR>
+	</problem>
+	<problem id="10" label="contradiction" src="LA" exp="from, in">
+		<ex>John saw Mary from the garden
+			Mary was in the garden</ex>
+		<!-- from UK? as an origin -->
+		<PT>{NP1} saw {NP2} from {NP3}
+			{NP2} was in {NP3}</PT>
+		<SR>see_from(NP1,NP2,NP3);  in(NP2,NP3)</SR>
+	</problem>
+	<problem id="11" label="neutral" src="LA" exp="in">
+		<ex>John saw Mary in the garden
+			John was in the garden</ex>
+		<PT>{NP1} saw {NP2} in {NP3}
+			{NP1} was in {NP3}</PT>
+		<SR>in(NP1,NP3);  in(NP2,NP3)</SR>
+	</problem>
+	<problem id="12" label="entailment" src="LA" exp="from, in">
+		<ex>John saw Mary from the garden
+			John was in the garden</ex>
+		<PT>{NP1} saw {NP2} from {NP3}
+			{NP1} was in {NP3}</PT>
+		<SR>see_from(NP1,NP2,NP3);  in(NP1,NP3)</SR>
+	</problem>
+	<FT>NP1[+det]; NP2[+det]; NP3[+det]</FT>
+	<BL>NP1 != NP2</BL>
+	<SR>see(NP1,NP2)</SR>
+</group>
+
+<!-- TODO Through the mirror adversarial -->
+<group seed="13" ent_type="directional">
+	<problem id="13" label="entailment" src="Nam:1995:Diss" cat="Subject-object orientation" exp="through, opposite" ent_type="argument orientation">
+		<ex>John saw Mary through the window
+			John and Mary were on opposite sides of the window</ex>
+		<PT>{NP1} saw {NP2} through {NP3}
+			{NP1} and {NP2} were on opposite sides of {NP3}</PT>
+		<SR>see_through(NP1,NP2,NP3);  opposite_side_of(NP3)</SR>
+		<BL>NP1 != NP2</BL>
+	</problem>
+	<problem id="13a" label="contradiction" src="YW" exp="through, opposite">
+		<ex>John has left the house through the window
+			John and the house are now on opposite sides of the window</ex>
+		<PT>{NP1} has left {NP4} through {NP3}
+			{NP1} and {NP4} are now on opposite sides of {NP3}</PT>
+		<SR>leave_through(NP1,NP4,NP3);  opposite_side_of(NP3);  part_of(NP3,NP4)</SR>
+		<note src="LA">Hypothesis has a bit weird semantics</note>
+	</problem>
+	<problem id="13b" label="entailment" src="YW" exp="through, part of">
+		<ex>John has left the house through the window
+			The window is part of the house</ex>
+		<PT>{NP1} has left {NP4} through {NP3}
+			{NP3} is part of {NP4}</PT>
+		<SR>leave_through(NP1,NP4,NP3);  part_of(NP3,NP4)</SR>
+	</problem>
+	<problem id="14" label="contradiction" src="LA" exp="behind, opposite" ent_type="projective">
+		<ex>John hugged Mary behind the window
+			John and Mary were on opposite sides of the window</ex>
+		<PT>{NP1} hugged {NP2} behind {NP3}
+			{NP1} and {NP2} were on opposite sides of {NP3}</PT>
+		<SR>behind_of(NP1,NP3);  behind_of(NP2,NP3);  hug(NP1,NP2);  opposite_side_of(NP3)</SR>
+		<BL>NP1 != NP2</BL>
+	</problem>
+	<problem id="14a" label="neutral" src="YW" exp="behind, opposite" ent_type="projective">
+		<ex>John saw Mary behind the window
+			John and Mary were on the opposite sides of the window</ex>
+		<PT>{NP1} saw {NP2} behind {NP3}
+			{NP1} and {NP2} were on the opposite sides of {NP3}</PT>
+		<SR>behind_of(NP1,NP3);  behind_of(NP2,NP3);  see(NP1,NP2);  opposite_side_of(NP3)</SR>
+		<BL>NP1 != NP2</BL>
+	</problem>
+	<FT>NP1[+det]; NP2[+det]; NP3[+det]; NP4[+det]</FT>
+</group>
+
+
+<group seed="15" ent_type="directional">
+	<problem id="15" label="entailment" src="Nam:1995:Diss" cat="Object orientation" exp="into">
+		<ex>John threw the ball into the box
+			The ball went into the box</ex>
+		<PT>{NP1} threw {NP2} into {NP3}
+			{NP2} went into {NP3}</PT>
+		<SR>throw_into(NP1,NP2,NP3)</SR>
+	</problem>
+	<problem id="16" label="neutral" src="LA" exp="at, into">
+		<ex>John threw the ball at the box
+			The ball went into the box</ex>
+		<PT>{NP1} threw {NP2} at {NP3}
+			{NP2} went into {NP3}</PT>
+		<SR>throw_at(NP1,NP2,NP3)</SR>
+	</problem>
+	<problem id="17" label="contradiction" src="LA" exp="at, into">
+		<ex>John threw the box at the ball
+			The ball went into the box</ex>
+		<PT>{NP1} threw {NP3} at {NP2}
+			{NP2} went into {NP3}</PT>
+		<SR>throw_at(NP1,NP2,NP3)</SR>
+		<note>It is very unlikely that ball moved in the box</note>
+	</problem>
+	<FT>NP1[+det]; NP2[+det]; NP3[+det]</FT>
+	<BL>NP2 != NP3</BL>
+	<SR>go_into(NP2,NP3)</SR>
+</group>
+
+
+<group seed="18" ent_type="argument orientation">
+	<problem id="18" label="entailment" src="Nam:1995:Diss" cat="Subject orientation" exp="at">
+		<ex>John criticized the teacher at the meeting
+			John was at the meeting</ex>
+		<PT>{NP1} criticized {NP2} at {NP3}
+			{NP1} was at {NP3}</PT>
+		<note>"at the meeting" is attached to VP</note>
+		<spans idx="1">5:27</spans>
+	</problem>
+	<problem id="18a" label="neutral" src="YW" exp="at">
+		<ex>John saw the teacher at the meeting
+			John was at the meeting</ex>
+		<PT>{NP1} saw {NP2} at {NP3}
+			{NP1} was at {NP3}</PT>
+	</problem>
+	<problem id="19" label="neutral" src="Nam:1995:Diss" exp="at">
+		<ex>The teacher criticized John at the meeting
+			John was at the meeting</ex>
+		<PT>{NP2} criticized {NP1} at {NP3}
+			{NP1} was at {NP3}</PT>
+		<note>"at the meeting" is attached to VP</note>
+		<spans idx="1">12:27</spans>
+	</problem>
+	<FT>NP1[+det]; NP2[+det]; NP3[+det]</FT>
+	<BL>NP1 != NP2</BL>
+	<SR>be_at(NP2,NP3);  be_at(NP1,NP3);  see(NP1,NP2);  criticize(NP1,NP2)</SR>
+</group>
+
+
+<group seed="20" ent_type="argument orientation">
+	<problem id="20" label="entailment" src="Nam:1995:Diss" cat="Subject and object orientation" exp="in, from">
+		<ex>John saw Mary in the garden from the rooftop
+			Mary was in the garden</ex>
+		<PT>{NP1} saw {NP2} in {NP3} from {NP4}
+			{NP2} was in {NP3}</PT>
+	</problem>
+	<problem id="21" label="entailment" src="Nam:1995:Diss" exp="in, from, on">
+		<ex>John saw Mary in the garden from the rooftop
+			John was on the rooftop</ex>
+		<PT>{NP1} saw {NP2} in {NP3} from {NP4}
+			{NP1} was on {NP4}</PT>
+		<SR>on(NP1,NP4)</SR>
+	</problem>
+	<!-- <problem id="22" label="contradiction" src="LA">
+		<ex>Mary saw John in the garden from the rooftop
+			Mary was in the garden</ex>
+		<note>dubious</note>
+	</problem> -->
+	<problem id="23" label="contradiction" src="LA" exp="in, from, on">
+		<ex>Mary saw John in the garden from the rooftop
+			John was on the rooftop</ex>
+		<PT>{NP2} saw {NP1} in {NP3} from {NP4}
+			{NP1} was on {NP4}</PT>
+		<SR>on(NP1,NP4)</SR>
+	</problem>
+	<FT>NP1[+det]; NP2[+det]; NP3[+det]; NP4[+det]</FT>
+	<BL>NP1 != NP2 and NP3 != NP4</BL>
+	<SR>see_from(NP1,NP2,NP4);  in(NP1,NP3);  in(NP2,NP3)</SR>
+</group>
+
+<group ent_type="argument orientation">
+	<problem id="24" label="entailment" src="Nam:1995:Diss" cat="Subject and object orientation" exp="in">
+		<ex>John met Mary in the garden
+			John was in the garden</ex>
+		<PT>{NP1} met {NP2} in {NP3}
+			{NP1} was in {NP3}</PT>
+		<SR>in(NP1,NP3)</SR>
+	</problem>
+	<problem id="25" label="entailment" src="Nam:1995:Diss"  exp="in">
+		<ex>John met Mary in the garden
+			Mary was in the garden</ex>
+		<PT>{NP1} met {NP2} in {NP3}
+			{NP2} was in {NP3}</PT>
+		<SR>in(NP2,NP3)</SR>
+	</problem>
+	<problem id="25a" label="neutral" src="LA" exp="in">
+		<ex>The boy in the coat met the girl
+			The girl was in the coat</ex>
+		<PT>{NP1} in {NP3} met {NP2}
+			{NP2} was in {NP3}</PT>
+		<SR>cloth(NP3); generic_person(NP1); generic_person(NP2)</SR>
+	</problem>
+	<FT>NP1[+det]; NP2[+det]; NP3[+det]</FT>
+	<BL>diff_values([NP1,NP2,NP3])</BL>
+	<SR>meet(NP1,NP2))</SR>
+</group>
+
+<group ent_type="directional">
+	<problem id="26" label="entailment" src="Nam:1995:Diss" cat="Subject and object orientation" exp="into">
+		<ex>John escorted Mary into the museum
+			John went into the museum</ex>
+		<PT>{NP1} escorted {NP2} into {NP3}
+			{NP1} went into {NP3}</PT>
+	</problem>
+	<problem id="27" label="entailment" src="Nam:1995:Diss" exp="into">
+		<ex>John escorted Mary into the museum
+			Mary went into the museum</ex>
+		<PT>{NP1} escorted {NP2} into {NP3}
+			{NP2} went into {NP3}</PT>
+	</problem>
+	<problem id="28" label="neutral" rel="26">
+		<ex>John sent Mary into the museum
+			Mary went into the museum</ex>
+		<note>"sending X" doesn't imply "X going into"</note>
+	</problem>
+	<problem id="29" label="neutral" exp="into">
+		<ex>John sent Mary into the museum
+			John went into the museum</ex>
+		<PT>{NP1} sent {NP2} into {NP3}
+			{NP1} went into {NP3}</PT>
+	</problem>
+	<FT>NP1[+det]; NP2[+det]; NP3[+det]</FT>
+	<BL>diff_values([NP1,NP2,NP3])</BL>
+	<SR>meet(NP1,NP2); walk_into(NP1,NP3); walk_into(NP2,NP3)</SR>
+</group>
+
+<problem id="30" label="entailment" src="Nam:1995:Diss" cat="symmetric locative">
+	<ex>John showed the picture to Mary through the window
+		The picture and Mary were on opposite sides of the window</ex>
+</problem>
+
+<problem id="30a" label="neutral" src="Nam:1995:Diss" rel="30">
+	<ex>John showed the picture to Mary through the window
+		John and Mary were on opposite sides of the window</ex>
+</problem>
+
+<problem id="30b" label="neutral" src="Nam:1995:Diss" rel="30">
+	<ex>John showed the picture to Mary through the window
+		The picture and John were on opposite sides of the window</ex>
+</problem>
+
+<group ent_type="directional">
+	<!-- accomplishment Verb with Path -->
+	<problem id="31" label="entailment" src="Nam:1995:Diss" cat="Path" exp="in, from">
+		<ex>Los Angeles is in California
+			John came from Los Angeles
+			John came from California</ex>
+		<PT>{NP1} is in {NP2}
+			{NP3} came from {NP1}
+			{NP3} came from {NP2}</PT>
+	</problem>
+	<problem id="31a" label="neutral" exp="in, from">
+		<ex>Los Angeles is in California
+			John came from California
+			John came from Los Angeles</ex>
+		<PT>{NP1} is in {NP2}
+			{NP3} came from {NP2}
+			{NP3} came from {NP1}</PT>
+	</problem>
+	<problem id="31aa" label="neutral" rel="31" src="LA" exp="in, from">
+		<ex>Los Angeles is in California
+			John did not come from Los Angeles
+			John came from California</ex>
+		<PT>{NP1} is in {NP2}
+			{NP3} did not come from {NP1}
+			{NP3} came from {NP2}</PT>
+	</problem>
+	<FT>NP1[+det]; NP2[+det]; NP3[+det]</FT>
+	<SR>k_city_in_state(NP1,NP2); person(NP3)</SR>
+</group>
+
+<problem id="31b" label="neutral" exp="in, from">
+	<ex>Las Vegas is not in California
+		John came from California
+		John came from Las Vegas</ex>
+	<note>John might have stayed in Las Vegas on the way from California</note>
+</problem>
+
+<problem id="31c" label="neutral" rel="31">
+	<ex>Las Vegas is not in California
+		John came from Las Vegas
+		John came from California</ex>
+	<note>John might have stayed in California on the way from Las Vegas</note>
+</problem>
+
+<problem id="31d" label="neutral" rel="31">
+	<ex>^Las Vegas is not Los Angeles
+		John came from Las Vegas
+		John came from Los Angeles</ex>
+	<note>John might have stayed in Los Angeles on the way from Las Vegas</note>
+</problem>
+
+<group ent_type="directional">
+	<!-- achievement Verb with location -->
+	<problem id="31e" label="entailment" exp="in, from">
+		<ex>Los Angeles is in California
+			John is calling from Los Angeles
+			John is calling from California</ex>
+		<PT>{NP1} is in {NP2}
+			{NP3} is calling from {NP1}
+			{NP3} is calling from {NP2}</PT>
+	</problem>
+	<problem id="31f" label="neutral" exp="in, from">
+		<ex>Los Angeles is in California
+			John is calling from California
+			John is calling from Los Angeles</ex>
+		<PT>{NP1} is in {NP2}
+			{NP3} is calling from {NP2}
+			{NP3} is calling from {NP1}</PT>
+	</problem>
+	<FT>NP1[+det]; NP2[+det]; NP3[+det]</FT>
+	<SR>k_city_in_state(NP1,NP2); person(NP3)</SR>
+</group>
+
+<group ent_type="directional">
+	<problem id="31g" label="contradiction" exp="in, from">
+		<ex>Las Vegas is not in California
+			John is calling from California
+			John is calling from Las Vegas</ex>
+		<PT>{NP1} is not in {NP2}
+			{NP3} is calling from {NP2}
+			{NP3} is calling from {NP1}</PT>
+	</problem>
+	<problem id="31h" label="contradiction" exp="in, from">
+		<ex>Las Vegas is not in California
+			John is calling from Las Vegas
+			John is calling from California</ex>
+		<PT>{NP1} is not in {NP2}
+			{NP3} is calling from {NP1}
+			{NP3} is calling from {NP2}</PT>
+	</problem>
+	<FT>NP1[+det]; NP2[+det]; NP3[+det]</FT>
+	<BL>(NP1,NP2) not in sig['k_city_in_state_p2']</BL>
+	<SR>city(NP1); state(NP2); person(NP3)</SR>
+</group>
+
+
+<problem id="31i" label="contradiction" rel="31">
+	<ex>Las Vegas is not Los Angeles
+		John is calling from Las Vegas
+		John is calling from Los Angeles</ex>
+	<note>Was reformulated as 31j to remove negation from the contradiction problem</note>
+</problem>
+
+<group ent_type="directional">
+	<problem id="31j" label="contradiction" exp="from">
+		<ex>Las Vegas and Los Angeles are different cities
+			John is calling from Las Vegas
+			John is calling from Los Angeles</ex>
+		<PT>{NP1} and {NP2} are different cities
+			{NP3} is calling from {NP1}
+			{NP3} is calling from {NP2}</PT>
+		<BL>NP1 != NP2</BL>
+		<SR>city(NP1); city(NP2); person(NP3)</SR>
+	</problem>
+	<problem id="31k" label="neutral" exp="from">
+		<ex>John and Mary are different persons
+			John is calling from Las Vegas
+			Mary is calling from Las Vegas</ex>
+		<PT>{NP1} and {NP2} are different persons
+			{NP1} is calling from {NP3}
+			{NP2} is calling from {NP3}</PT>
+		<BL>NP1 != NP2</BL>
+		<SR>city(NP3); person(NP1); person(NP2)</SR>
+	</problem>
+	<FT>NP1[+det]; NP2[+det]; NP3[+det]</FT>
+</group>
+
+<group ent_type="directional">
+	<!-- activity Verb with Path -->
+	<problem id="1" label="entailment" src="Nam:1995:Diss" cat="Path" exp="from, to, in">
+		<ex>Los Angeles is in California
+			Las Vegas is not in California
+			John is driving from Los Angeles to Las Vegas
+			John is driving from California to Las Vegas</ex>
+		<PT>{NP1} is in {NP0}
+			{NP2} is not in {NP0}
+			{NP3} is driving from {NP1} to {NP2}
+			{NP3} is driving from {NP0} to {NP2}</PT>
+	</problem>
+	<problem id="32" label="entailment" src="Nam:1995:Diss" cat="Path" exp="from, to, in">
+		<ex>Los Angeles is in California
+			Las Vegas is not in California
+			John is driving from Las Vegas to Los Angeles
+			John is driving from Las Vegas to California</ex>
+		<PT>{NP1} is in {NP0}
+			{NP2} is not in {NP0}
+			{NP3} is driving from {NP2} to {NP1}
+			{NP3} is driving from {NP2} to {NP0}</PT>
+	</problem>
+	<SR>k_city_in_state(NP1,NP0); city(NP2); person(NP3)</SR>
+	<BL>NP1 != NP2 and (NP2,NP0) not in sig['k_city_in_state_p2'] and \
+		( list_is_subset([(NP1,),(NP2,)], sig['us_city_pn']) or list_is_subset([(NP1,),(NP2,)], sig['eu_city_pn']) )</BL>
+	<FT>NP0[+det]; NP1[+det]; NP2[+det]; NP3[+det]</FT>
+</group>
+
+<group ent_type="directional">
+	<problem id="32a" label="contradiction" exp="from, to">
+		<ex>John is driving from Las Vegas to Los Angeles
+			John is driving from Los Angeles to Las Vegas</ex>
+		<PT>{NP3} is driving from {NP1} to {NP2}
+			{NP3} is driving from {NP2} to {NP1}</PT>
+	</problem>
+	<problem id="32b" label="neutral" exp="from, to, in">
+		<ex>Los Angeles is in California
+			John is driving from California to Las Vegas
+			John is driving from Los Angeles to Las Vegas</ex>
+		<PT>{NP1} is in {NP0}
+			{NP3} is driving from {NP0} to {NP2}
+			{NP3} is driving from {NP1} to {NP2}</PT>
+	</problem>
+	<SR>k_city_in_state(NP1,NP0); city(NP2); person(NP3)</SR>
+	<BL>NP1 != NP2 and ( list_is_subset([(NP1,),(NP2,)], sig['us_city_pn']) or list_is_subset([(NP1,),(NP2,)], sig['eu_city_pn']) )</BL>
+	<FT>NP0[+det]; NP1[+det]; NP2[+det]; NP3[+det]</FT>
+</group>
+
+<group ent_type="directional">
+	<problem id="32c" label="neutral" src="Nam:1995:Diss" exp="from, to, in">
+		<ex>Los Angeles is in California
+			Las Vegas is in Nevada
+			John is driving from California to Nevada
+			John is driving from Los Angeles to Las Vegas</ex>
+		<PT>{NP1} is in {NP0}
+			{NP2} is in {NP4}
+			{NP3} is driving from {NP0} to {NP4}
+			{NP3} is driving from {NP1} to {NP2}</PT>
+	</problem>
+	<problem id="33" label="entailment" src="Nam:1995:Diss" exp="from, to, in">
+		<ex>Los Angeles is in California
+			Las Vegas is in Nevada
+			John is driving from Las Vegas to Los Angeles
+			John is driving from Nevada to California</ex>
+		<PT>{NP1} is in {NP0}
+			{NP2} is in {NP4}
+			{NP3} is driving from {NP2} to {NP1}
+			{NP3} is driving from {NP4} to {NP0}</PT>
+	</problem>
+	<problem id="33a" label="neutral" rel="33" src="YW" exp="from, to, in">
+		<ex>Los Angeles is in California
+			Las Vegas is in Nevada
+			John is driving from Nevada to Los Angeles
+			John is driving from Las Vegas to California</ex>
+		<PT>{NP1} is in {NP0}
+			{NP2} is in {NP4}
+			{NP3} is driving from {NP4} to {NP1}
+			{NP3} is driving from {NP2} to {NP0}</PT>
+	</problem>
+	<problem id="33b" label="neutral" rel="33" src="LA" exp="from, to, in">
+		<ex>Los Angeles is in California
+			Las Vegas is in Nevada
+			John is driving from Las Vegas to California
+			John is driving from Nevada to Los Angeles</ex>
+		<PT>{NP1} is in {NP0}
+			{NP2} is in {NP4}
+			{NP3} is driving from {NP2} to {NP0}
+			{NP3} is driving from {NP4} to {NP1}</PT>
+	</problem>
+	<SR>k_city_in_state(NP1,NP0); k_city_in_state(NP2,NP4); person(NP3)</SR>
+	<BL>NP1 != NP2 and NP0 != NP4 and ( list_is_subset([(NP0,),(NP4,)], sig['us_state_pn']) or list_is_subset([(NP0,),(NP4,)], sig['eu_state_pn']) )</BL>
+	<FT>NP0[+det]; NP1[+det]; NP2[+det]; NP3[+det]; NP4[+det]</FT>
+</group>
+
+<problem id="34" label="entailment" src="Nam:1995:Diss" cat="path">
+	<ex>John flew from Los Angeles to San Diego, and then to Las Vegas
+		John flew from Los Angeles to Las Vegas</ex>
+	<note>dubious</note>
+</problem>
+
+<problem id="35" label="entailment" src="Nam:1995:Diss" cat="path" rel="34">
+	<ex>John flew from Los Angeles to San Diego, and then to Las Vegas
+		John flew from San Diego to Las Vegas</ex>
+</problem>
+
+<problem id="35a" label="entailment" rel="35" src="YW">
+	<ex>John flew from Los Angeles to San Diego, and then to Las Vegas
+		John flew to Las Vegas through San Diego</ex>
+</problem>
+
+<group ent_type="projective">
+	<problem id="36" label="contradiction" src="Nam:1995:Diss" cat="intrinsic orientation" exp="behind, in front of">
+		<ex>John is in front of Mary
+			John is behind Mary</ex>
+		<PT>{NP1} is in front of {NP2}
+			{NP1} is behind {NP2}</PT>
+	</problem>
+	<problem id="37" label="neutral" exp="behind, in front of">
+		<ex>Mary is in front of John
+			John is behind Mary</ex>
+		<PT>{NP2} is in front of {NP1}
+			{NP1} is behind {NP2}</PT>
+	</problem>
+	<SR>has_front_back(NP1); has_front_back(NP2)</SR>
+	<BL>NP1 != NP2</BL>
+	<FT>NP1[+det]; NP2[+det]</FT>
+</group>
+
+
+<group ent_type="non-projective">
+	<problem id="38" label="entailment" src="Nam:1995:Diss" exp="in">
+		<ex>John is in the garden
+			The garden is in the church
+			John is in the church</ex>
+		<PT>{NP1} is in {NP2}
+			{NP2} is in {NP3}
+			{NP1} is in {NP3}</PT>
+		<SR>in(NP2,NP3); in(NP1,NP3)</SR>
+	</problem>
+	<problem id="39" label="neutral" src="LA" exp="in">
+		<ex>John is in the garden
+			The church is in the garden
+			John is in the church</ex>
+		<PT>{NP1} is in {NP2}
+			{NP3} is in {NP2}
+			{NP1} is in {NP3}</PT>
+		<SR>in(NP3,NP2); in(NP1,NP3)</SR>
+	</problem>
+	<!-- Too few examples -->
+	<!-- <problem id="38a" label="contradiction" src="LA" exp="in">
+		<ex>The garden is in the church
+			The church is in the forest
+			The church is in the garden</ex>
+		<PT>{NP1} is in {NP2}
+			{NP2} is in {NP3}
+			{NP2} is in {NP1}</PT>
+		<SR>in(NP2,NP3); in(NP2,NP1)</SR>
+	</problem> -->
+	<SR>in(NP1,NP2)</SR>
+	<BL>diff_values([NP1, NP2, NP3])</BL>
+	<FT>NP1[+det]; NP2[+det]; NP3[+det]</FT>
+</group>
+
+
+<problem id="40" label="entailment" src="Nam:1995:Diss" cat="symmetric locative">
+	<ex>John jogged across the street
+		John was on the street</ex>
+</problem>
+
+<group ent_type="directional">
+	<problem id="41" label="entailment" src="Nam:1995:Diss" cat="symmetric locative" exp="through, in">
+		<ex>John drove through the tunnel
+			John was in the tunnel</ex>
+		<PT>{NP1} drove through {NP2}
+			{NP1} was in {NP2}</PT>
+	</problem>
+	<problem id="41a" label="neutral" src="LA" exp="by, in">
+		<ex>John drove by the tunnel
+			John was in the tunnel</ex>
+		<PT>{NP1} drove by {NP2}
+			{NP1} was in {NP2}</PT>
+	</problem>
+	<!-- Ambiguous as drive around can mean to surrund or drive in -->
+	<!-- <problem id="42" label="contradiction" exp="around, in">
+		<ex>John drove around the tunnel
+			John was in the tunnel</ex>
+		<PT>{NP1} drove around {NP2}
+			{NP1} was in {NP2}</PT>
+	</problem> -->
+	<SR>person(NP1); drive_around_by_through(NP2)</SR>
+	<BL>NP1 != NP2</BL>
+	<FT>NP1[+det]; NP2[+det]</FT>
+</group>
+
+<problem id="42a" label="entailment" rel="42" src="YW">
+	<ex>John drove around the lake
+		John surrounded the lake</ex>
+</problem>
+
+<problem id="42b" label="entailment" rel="42" src="YW">
+	<ex>John surrounded the lake
+		John drove around the lake</ex>
+</problem>
+
+<problem id="42c" label="entailment" rel="42" src="YW">
+	<ex>John surrounded the lake
+		John moved around the lake</ex>
+</problem>
+
+
+
+<problem id="43" label="entailment" src="Nam:1995:Diss" cat="symmetric locative">
+	<ex>The helicopter flew over the field
+		The helicopter was above the fieid</ex>
+</problem>
+
+<problem id="43a" label="entailment" rel="43" src="YW">
+	<ex>The mole moved under the field
+		The mole was under the field</ex>
+</problem>
+
+<problem id="43b" label="entailment" rel="43" src="YW">
+	<ex>The man ran across the street
+		The man was across the street</ex>
+</problem>
+
+
+
+<problem id="44" label="entailment" src="Nam:1995:Diss" cat="symmetric locative">
+	<ex>The bus ran past the school
+		The bus was at the school</ex>
+	<note>dubious</note>
+</problem>
+
+<problem id="44a" label="entailment" src="JZ" rel="44">
+	<ex>The bus drove past the school
+		The bus was near the school</ex>
+</problem>
+
+<problem id="44b1" label="contradiction" src="JZ" rel="44">
+	<ex>The bus drove past the parking place
+		The bus was in the parking place</ex>
+</problem>
+
+<problem id="44b2" label="contradiction" src="JZ" rel="44">
+	<ex>The bus drove past the parking place
+		The bus was at the parking place</ex>
+</problem>
+
+<problem id="44b3" label="contradiction" src="JZ" rel="44">
+	<ex>The bus drove past the parking place
+		The bus was on the parking place</ex>
+</problem>
+
+<problem id="44c" label="neutral" src="JZ" rel="44">
+	<ex>The bus drove past the school
+		The bus was in front of the school</ex>
+</problem>
+
+
+
+
+<problem id="45" label="neutral" src="Nam:1995:Diss" cat="directional locative">
+	<ex>Cindi walked to the market
+		Cindi was in the market</ex>
+	<note>dubious</note>
+</problem>
+
+<problem id="45a" label="entailment" src="JZ" rel="45">
+	<ex>Cindy walked to the market
+		Cindy got closer to the market</ex>
+</problem>
+
+<problem id="45b" label="entailment" src="JZ" rel="45">
+	<ex>Cindy walked to the market
+		Cindy approached the market</ex>
+</problem>
+
+
+
+<problem id="46" label="neutral" src="Nam:1995:Diss" cat="directional locative" rel="45">
+	<ex>Cindi walked from the market
+		Cindi was in the market</ex>
+	<note>dubious</note>
+</problem>
+
+<problem id="46a" label="contradiction" src="JZ" rel="46">
+	<ex>Cindi walked away from the market
+		Cindi approached the market</ex>
+</problem>
+
+<problem id="46b1" label="contradiction" src="JZ" rel="46">
+	<ex>Cindi walked away from the market
+		Cindi walked to the market</ex>
+</problem>
+
+<problem id="46b2" label="contradiction" src="JZ" rel="46">
+	<ex>Cindi walked away from the market
+		Cindi walked towards the market</ex>
+</problem>
+
+<problem id="46c" label="neutral" src="JZ" rel="46">
+	<ex>Cindi walked away from the market
+		Cindi was at the market</ex>
+</problem>
+
+
+<group ent_type="directional">
+	<problem id="46b3" label="contradiction" src="LA" rel="46b2" exp="away from, towards">
+		<ex>Cindi is walking away from the market towards the park
+			Cindi is walking towards the market</ex>
+		<PT>{NP1} is walking away from {NP2} towards {NP3}
+			{NP1} is walking towards {NP2}</PT>
+	</problem>
+	<problem id="46b4" label="entailment" src="LA" rel="46b2" exp="away from, towards">
+		<ex>Cindi is walking away from the market towards the park
+			Cindi is walking towards the park</ex>
+		<PT>{NP1} is walking away from {NP2} towards {NP3}
+			{NP1} is walking towards {NP3}</PT>
+	</problem>
+	<problem id="46b5" label="contradiction" src="LA" rel="46b2" exp="away from, towards">
+		<ex>Cindi is walking away from the market towards the park
+			Cindi is walking away from the park</ex>
+		<PT>{NP1} is walking away from {NP2} towards {NP3}
+			{NP1} is walking away from {NP3}</PT>
+	</problem>
+	<problem id="46b6" label="neutral" src="LA" rel="46b2" exp="away from, towards, near" ent_type="argument orientation">
+		<ex>Cindi is walking away from the market towards the park
+			Cindi is near the park</ex>
+		<PT>{NP1} is walking away from {NP2} towards {NP3}
+			{NP1} is near {NP3}</PT>
+	</problem>
+	<SR>walk_away_from(NP1,NP2); walk_towards(NP1,NP3)</SR>
+	<BL>diff_values([NP1,NP2,NP3])</BL>
+	<FT>NP1[+det]; NP2[+det]; NP3[+det]</FT>
+</group>
+
+
+<group seed="47" ent_type="directional">
+	<problem id="47" label="entailment" src="Nam:1995:Diss" cat="directional locative" rel="45">
+		<ex>Cindi walked into the market
+			Cindi was in the market</ex>
+	</problem>
+	<problem id="47a" label="entailment" src="JZ" exp="into, outside">
+		<ex>Cindi walked into the market
+			Cindi was outside the market</ex>
+		<PT>{NP1} walked into {NP2}
+			{NP1} was outside {NP2}</PT>
+		<SR>outside(NP1, NP2)</SR>
+	</problem>
+	<!-- contrasting inside and outside would be too trivial -->
+	<problem id="47a1" label="contradiction" src="LA" exp="in, outside">
+		<ex>Cindi is in the market
+			Cindi is outside the market</ex>
+		<PT>{NP1} is in {NP2}
+			{NP1} is outside {NP2}</PT>
+		<SR>outside(NP1, NP2)</SR>
+	</problem>
+	<!-- <problem id="47b" label="neutral" src="JZ">
+		<ex>Cindi walked into the market
+			Cindi walked out of the market</ex>
+		<note>dubious</note>
+	</problem> -->
+	<problem id="47c" label="entailment" src="JZ" exp="into">
+		<ex>Cindi walked into the market
+			Cindi entered the market</ex>
+		<PT>{NP1} walked into {NP2}
+			{NP1} entered {NP2}</PT>
+		<SR>enter(NP1, NP2)</SR>
+	</problem>
+	<SR>walk_into(NP1, NP2)</SR>
+	<FT>NP1[+det]; NP2[+det]</FT>
+</group>
+
+
+
+<group seed="48" ent_type="directional">
+	<problem id="48" label="entailment" src="Nam:1995:Diss" cat="directional locative" rel="45" exp="out of, in">
+		<ex>Cindi walked out of the market
+			Cindi was in the market</ex>
+		<PT>{NP1} walked out of {NP2}
+			{NP1} was in {NP2}</PT>
+		<SR>walk_out_of(NP1, NP2); in(NP1, NP2)</SR>
+	</problem>
+	<problem id="48a" label="entailment" src="JZ" exp="out of, in">
+		<ex>Cindi fell out of the window
+			Cindi was in the window</ex>
+		<PT>{NP1} fell out of {NP2}
+			{NP1} was in {NP2}</PT>
+		<SR>fall_out_of_IMP_be_in(NP1, NP2)</SR>
+		<note>dubious</note>
+	</problem>
+	<problem id="48a1" label="contradiction" src="LA" exp="out of, in">
+		<ex>Cindi fell out of the window
+			Cindi is in the window</ex>
+		<PT>{NP1} fell out of {NP2}
+			{NP1} is in {NP2}</PT>
+		<SR>fall_out_of_IMP_be_in(NP1, NP2)</SR>
+	</problem>
+	<!-- <problem id="48b" label="entailment" src="JZ" exp="out of, inside">
+		<ex>Cindi fell out of the window
+			Cindi was inside</ex>
+		<PT>{NP1} fell out of {NP2}
+			{NP1} was inside</PT>
+		<SR>fall_out_of_IMP_be_inside(NP1, NP2)</SR>
+	</problem> -->
+	<problem id="48c" label="entailment" src="JZ" exp="out of">
+		<ex>Cindi walked out of the market
+			Cindi left the market</ex>
+		<PT>{NP1} walked out of {NP2}
+			{NP1} left {NP2}</PT>
+		<SR>walk_out_of(NP1, NP2);  leave(NP1, NP2)</SR>
+	</problem>
+	<problem id="48d" label="neutral" src="JZ">
+		<ex>Cindi walked out of the market
+			Cindi was in front of the market</ex>
+	</problem>
+	<FT>NP1[+det]; NP2[+det]</FT>
+</group>
+
+
+
+
+<problem id="49" label="entailment" src="Nam:1995:Diss" cat="directional locative">
+	<ex>John ran to the post office
+		John was at the post office</ex>
+</problem>
+
+<problem id="49a" label="???" src="JZ" rel="49">
+	<ex>John ran to the north
+		John was at the north</ex>
+</problem>
+
+<problem id="49b" label="contradiction" src="JZ" rel="49">
+	<ex>John pointed to the post office
+		John was at the post office</ex>
+	<note>dubious</note>
+</problem>
+
+<problem id="49c" label="neutral" src="JZ" rel="49">
+	<ex>John ran to the post office
+		John was behind the post office</ex>
+</problem>
+
+
+
+
+<problem id="50" label="entailment" src="Nam:1995:Diss" cat="directional locative" rel="49">
+	<ex>John ran from the post office
+		John was at the post office</ex>
+</problem>
+
+<problem id="50a" label="entailment" src="JZ" rel="50">
+	<ex>John ran down from the hill
+		John was on top of the hill</ex>
+	<note>"down" is optional</note>
+	<note>dubious</note>
+</problem>
+
+<problem id="50b1" label="contradiction" src="JZ" rel="50">
+	<ex>The cable came from the post office
+		The cable was at the post office</ex>
+	<note>dubious</note>
+</problem>
+
+<problem id="50b2" label="contradiction" src="JZ" rel="50">
+	<ex>The cable ran from the post office
+		The cable was at the post office</ex>
+	<note>dubious</note>
+</problem>
+
+
+
+<problem id="51" label="neutral" src="Nam:1995:Diss" cat="directional locative" rel="49">
+	<ex>John ran towards the post office
+		John was at the post office</ex>
+</problem>
+
+<problem id="51a" label="entailment" src="JZ" rel="51">
+	<ex>John ran towards the post office
+		John approached the post office</ex>
+	<note>dubious: approach could be understood as coming very(!) close</note>
+</problem>
+
+<problem id="51b" label="contradiction" src="JZ" rel="51">
+	<ex>John ran towards Mary
+		The post office ran towards John</ex>
+	<note>includes impossible event</note>
+</problem>
+
+<problem id="51c" label="neutral" src="JZ" rel="51">
+	<ex>John ran towards Mary
+		Mary ran towards John</ex>
+</problem>
+
+
+
+<problem id="52" label="entailment" src="Nam:1995:Diss" cat="symmetric locative">
+	<ex>The house is across the street from the bus stop
+		The bus stop is across the street from the house</ex>
+</problem>
+
+<problem id="52a" label="entailment" src="JZ" rel="52">
+	<ex>The house is across the street from the bus stop
+		The house and the bus stop are on opposite sides of the street</ex>
+</problem>
+
+<problem id="52b" label="contradiction" src="JZ" rel="52">
+	<ex>The house is across the street from the bus stop
+		The street is across the bus stop from the house</ex>
+</problem>
+
+<problem id="53" label="entailment" src="Nam:1995:Diss" cat="symmetric locative" rel="52">
+	<ex>The bus stop is across the street from the house
+		The house is across the street from the bus stop</ex>
+</problem>
+
+
+<!-- Dubious: Both should be neutral -->
+<problem id="54" label="contradiction" src="Nam:1995:Diss" cat="asymmetric locative">
+	<ex>Bill is to the left of the tree from John
+		John is to the left of the tree from Bill</ex>
+</problem>
+
+<problem id="55" label="contradiction" src="Nam:1995:Diss" meta="redundant" cat="asymmetric locative">
+	<ex>John is to the left of the tree from Bill
+		Bill is to the left of the tree from John</ex>
+</problem>
+<!-- Dubious: we don't now the orientation of another -->
+
+
+<problem id="56" label="entailment" rel="54">
+	<ex>Bill is to the right of the tree from John
+		John is to the left of the tree from Bill</ex>
+	<note src="JZ">I'M NOT SURE ABOUT THIS ONE. Only Bill is standing next to the tree. John is looking at the two, but he is not next to a tree, so how could he be left of the tree?</note>
+</problem>
+
+<problem id="56a" label="neutral" src="JZ" rel="56">
+	<ex>Bill is sitting on John's left
+		John is sitting on Bill's right</ex>
+	<note src="JZ">entailment?</note>
+	<note src="LA">John is not necessarily sitting</note>
+</problem>
+
+<group ent_type="projective">
+	<problem id="56b" label="entailment" src="JZ" rel="56" exp="to the right of, to the left of">
+		<ex>The trash can is to the right of the tree from John
+			The tree is to the left of the trash can from John</ex>
+		<PT>{NP1} is to the right of {NP2} from {NP3}
+			{NP2} is to the left of {NP1} from {NP3}</PT>
+	</problem>
+	<problem id="56c" label="contradiction" src="JZ" rel="56" exp="to the right of">
+		<ex>The trash can is to the right of the tree from John
+			The tree is to the right of the trash can from John</ex>
+		<PT>{NP1} is to the right of {NP2} from {NP3}
+			{NP2} is to the right of {NP1} from {NP3}</PT>
+	</problem>
+	<SR>has_front_back(NP3); between_of(NP1,NP2); between_of(NP2,NP1)</SR>
+	<BL>diff_values([NP1,NP2,NP3])</BL>
+	<FT>NP1[+det]; NP2[+det]; NP3[+det]</FT>
+</group>
+
+<problem id="56d" label="entailment" src="JZ" rel="56">
+	<ex>The oak is to the right of the elm from John
+		The palm is to the right of the oak from John
+		The palm is to the right of the elm from John</ex>
+</problem>
+
+
+
+<problem id="57" label="entailment" rel="55">
+	<ex>John is to the left of the tree from Bill
+		Bill is to the right of the tree from John</ex>
+	<note>Dubious due to 56's note</note>
+</problem>
+
+<problem id="58" label="entailment" src="Nam:1995:Diss" cat="symmetric locative">
+	<ex>The haunted castle was through the forest from the village
+		The village was through the forest from the haunted castle</ex>
+</problem>
+
+<problem id="59" label="entailment" src="Nam:1995:Diss" rel="58">
+	<ex>The village was through the forest from the haunted castle
+		The haunted castle was through the forest from the village</ex>
+</problem>
+
+<problem id="60" label="entailment" src="Nam:1995:Diss" cat="symmetric locative">
+	<ex>The school is past City Hall from your house
+		Your house is past City Hall from the school</ex>
+</problem>
+
+<problem id="61" label="entailment" src="Nam:1995:Diss" rel="60">
+	<ex>Your house is past City Hall from the school
+		The school is past City Hall from your house</ex>
+</problem>
+
+<problem id="62" label="entailment" src="Nam:1995:Diss" cat="symmetric locative">
+	<ex>The market is around the corner from the gas station
+		The gas station is around the corner from the market</ex>
+</problem>
+
+<problem id="63" label="entailment" src="Nam:1995:Diss" rel="62">
+	<ex>The gas station is around the corner from the market
+		The market is around the corner from the gas station</ex>
+</problem>
+
+<problem id="64" label="entailment" src="Nam:1995:Diss" cat="symmetric locative">
+	<ex>John saw Mary across the street
+		John and Mary were on opposite sides of the street</ex>
+</problem>
+
+<problem id="65" label="entailment" src="Nam:1995:Diss" cat="symmetric locative">
+	<ex>John jogged across the street from here
+		John jogged from here across the street</ex>
+	<note>The premise is ambiguous, having directional (jogged from here) and stative perspectival (jogging happend accoss the street from here) readings</note>
+</problem>
+
+<problem id="66" label="entailment" src="Nam:1995:Diss" rel="65">
+	<ex>John jogged across the street from here
+		Across the street from here, John jogged</ex>
+</problem>
+
+<problem id="67" label="neutral" src="Nam:1995:Diss" rel="65">
+	<ex>John jogged from here across the street
+		Across the street from here, John jogged</ex>
+</problem>
+
+<problem id="68" label="neutral" src="Nam:1995:Diss" rel="65">
+	<ex>Across the street from here, John jogged
+		John jogged from here across the street</ex>
+</problem>
+
+
+
+<group ent_type="projective">
+	<problem id="69" label="entailment" src="Zwarts_Winter:2000" cat="vector-monotonicity" exp="between, behind">
+		<ex>Mary is between the tree and the house
+			Mary is behind the house
+			The tree is behind the house</ex>
+		<PT>{NP2} is between {NP1} and {NP3}
+			{NP2} is behind {NP3}
+			{NP1} is behind {NP3}</PT>
+	</problem>
+	<problem id="70" label="entailment" src="Zwarts_Winter:2000" exp="between, behind">
+		<ex>Mary is between the tree and the house
+			The tree is behind the house
+			Mary is behind the house</ex>
+		<PT>{NP2} is between {NP1} and {NP3}
+			{NP1} is behind {NP3}
+			{NP2} is behind {NP3}</PT>
+	</problem>
+	<problem id="71" label="neutral" src="LA" exp="between, behind">
+		<ex>Mary is between the tree and the house
+			The house is behind Mary
+			The tree is behind the house</ex>
+		<PT>{NP2} is between {NP1} and {NP3}
+			{NP3} is behind {NP2}
+			{NP1} is behind {NP3}</PT>
+		<SR>has_front_back(NP2)</SR>
+	</problem>
+	<problem id="72c" label="neutral" src="LA" exp="between, in front of, behind">
+		<ex>Mary is between the tree and the house
+			Mary is behind the house
+			The tree is in front of Mary</ex>
+		<PT>{NP2} is between {NP1} and {NP3}
+			{NP2} is behind {NP3}
+			{NP1} is in front of {NP2}</PT>
+		<SR>has_front_back(NP2)</SR>
+	</problem>
+	<problem id="72d" label="neutral" src="LA" exp="between, in front of">
+		<ex>Mary is between the tree and the house
+			The tree is in front of the house
+			The tree is in front of Mary</ex>
+		<PT>{NP2} is between {NP1} and {NP3}
+			{NP1} is in front of {NP3}
+			{NP1} is in front of {NP2}</PT>
+		<SR>has_front_back(NP2)</SR>
+	</problem>
+	<problem id="72a" label="contradiction" src="LA" exp="between, in front of, behind">
+		<ex>Mary is between the tree and the house
+			The tree is in front of the house
+			Mary is behind the house</ex>
+		<PT>{NP2} is between {NP1} and {NP3}
+			{NP1} is in front of {NP3}
+			{NP2} is behind {NP3}</PT>
+		<SR></SR>
+	</problem>
+	<problem id="72b" label="contradiction" src="LA" exp="between, in front of, behind">
+		<ex>Mary is between the tree and the house
+			Mary is in front of the house
+			The tree is behind the house</ex>
+		<PT>{NP2} is between {NP1} and {NP3}
+			{NP2} is in front of {NP3}
+			{NP1} is behind {NP3}</PT>
+		<SR></SR>
+	</problem>
+	<problem id="72f" label="contradiction" src="LA" exp="between, in front of, behind">
+		<ex>Mary is between the tree and the house
+			The tree is behind the house
+			Mary is in front of the house</ex>
+		<PT>{NP2} is between {NP1} and {NP3}
+			{NP1} is behind {NP3}
+			{NP2} is in front of {NP3}</PT>
+		<SR></SR>
+	</problem>
+	<SR>has_front_back(NP3); between_of(NP2,NP1); between_of(NP2,NP3)</SR>
+	<BL>diff_values([NP1, NP2, NP3])</BL>
+	<FT>NP1[+det]; NP2[+det]; NP3[+det]</FT>
+</group>
+
+
+<group ent_type="projective">
+	<problem id="69a" label="entailment" src="LA" exp="between, in front of, behind">
+		<ex>Mary is between the car and the house
+			The house is behind Mary
+			The car is in front of Mary</ex>
+		<PT>{NP2} is between {NP1} and {NP3}
+			{NP3} is behind {NP2}
+			{NP1} is in front of {NP2}</PT>
+		<SR>has_front_back(NP2)</SR>
+	</problem>
+	<problem id="72e" label="neutral" src="LA" exp="between, in front of">
+		<ex>Mary is between the car and the house
+			Mary is in front of the house
+			Mary is in front of the car</ex>
+		<PT>{NP2} is between {NP1} and {NP3}
+			{NP2} is in front of {NP3}
+			{NP2} is in front of {NP1}</PT>
+		<SR>has_front_back(NP1); has_front_back(NP3)</SR>
+	</problem>
+	<problem id="72g" label="contradiction" src="LA" exp="between, in front of, behind">
+		<ex>Mary is between the car and the house
+			The house is behind the car
+			Mary is in front of the car</ex>
+		<PT>{NP2} is between {NP1} and {NP3}
+			{NP3} is behind {NP1}
+			{NP2} is in front of {NP1}</PT>
+		<SR>has_front_back(NP1)</SR>
+	</problem>
+	<SR>between_of(NP2,NP1); between_of(NP2,NP3)</SR>
+	<BL>diff_values([NP1, NP2, NP3])</BL>
+	<FT>NP1[+det]; NP2[+det]; NP3[+det]</FT>
+</group>
+
+
+<!-- Stative Verb with locative In & Outside -->
+<problem id="73" label="entailment" src="Zwarts_Winter:2000" cat="upward point-monotonicity">
+	<ex>^Paris is in France
+		The house is in Paris
+		The house is in France</ex>
+</problem>
+
+<problem id="73a" label="entailment" src="JZ" rel="73">
+	<ex>Switzerland is between Germany and Italy
+		Germany and Italy are in Europe
+		Switzerland is in Europe</ex>
+	<note src="LA">Not generally entailment. World knowledge interferes</note>
+</problem>
+
+<problem id="73b" label="neutral" src="JZ" rel="73">
+	<ex>Switzerland is between Germany and Italy
+		Germany and Italy are in the EU
+		Switzerland is in the EU</ex>
+	<note src="LA">Why not contradiction?</note>
+</problem>
+
+<problem id="73c" label="neutral" src="JZ" rel="73">
+	<ex>Switzerland is between Germany and Italy
+		John went from Germany to Italy
+		John went through Switzerland</ex>
+</problem>
+
+
+<group ent_type="non-projective">
+	<problem id="74" label="neutral" exp="in">
+		<ex>Paris is in France
+			The house is in France
+			The house is in Paris</ex>
+		<PT>{NP1} is in {NP2}
+			{NP3} is in {NP2}
+			{NP3} is in {NP1}</PT>
+	</problem>
+	<problem id="74a" label="contradiction" exp="in">
+		<ex>Paris is in France
+			The house is not in France
+			The house is in Paris</ex>
+		<PT>{NP1} is in {NP2}
+			{NP3} is not in {NP2}
+			{NP3} is in {NP1}</PT>
+	</problem>
+	<problem id="74b" label="contradiction" exp="in, outside">
+		<ex>Paris is in France
+			The house is outside France
+			The house is in Paris</ex>
+		<PT>{NP1} is in {NP2}
+			{NP3} is outside {NP2}
+			{NP3} is in {NP1}</PT>
+	</problem>
+	<problem id="75" label="neutral" exp="in">
+		<ex>Paris is in France
+			The house is not in Paris
+			The house is in France</ex>
+		<PT>{NP1} is in {NP2}
+			{NP3} is not in {NP1}
+			{NP3} is in {NP2}</PT>
+	</problem>
+	<problem id="75a" label="neutral" exp="in, outside">
+		<ex>Paris is in France
+			The house is not in Paris
+			The house is outside France</ex>
+		<PT>{NP1} is in {NP2}
+			{NP3} is not in {NP1}
+			{NP3} is outside {NP2}</PT>
+	</problem>
+	<problem id="77" label="neutral" exp="in">
+		<ex>Paris is in France
+			The house is in France
+			The house is not in Paris</ex>
+		<PT>{NP1} is in {NP2}
+			{NP3} is in {NP2}
+			{NP3} is not in {NP1}</PT>
+	</problem>
+	<problem id="77a" label="entailment" exp="in, outside">
+		<ex>Paris is in France
+			The house is outside France
+			The house is not in Paris</ex>
+		<PT>{NP1} is in {NP2}
+			{NP3} is outside {NP2}
+			{NP3} is not in {NP1}</PT>
+	</problem>
+	<SR>k_city_in_state(NP1,NP2); landmark(NP3)</SR>
+	<BL>diff_values([NP1, NP2, NP3])</BL>
+	<FT>NP1[+det]; NP2[+det]; NP3[+det]</FT>
+</group>
+
+
+
+
+<problem id="76" label="entailment" src="Zwarts_Winter:2000" cat="downward point-monotonicity">
+	<ex>^Paris is in France
+		The house is outside France
+		The house is outside Paris</ex>
+</problem>
+
+<problem id="76a" label="contradiction" src="JZ" rel="76">
+	<ex>^Paris is not at the edge of France
+		The house is just outside France
+		The house is just outside Paris</ex>
+</problem>
+
+
+<problem id="78" label="neutral" rel="76">
+	<ex>^Paris is in France
+		The house is outside Paris
+		The house is outside France</ex>
+</problem>
+
+
+<group ent_type="non-projective">
+<!-- Stative Verb with locative Between -->
+	<problem id="79" label="neutral" src="Zwarts_Winter:2000" cat="vector-monotonicity" exp="between">
+		<ex>The cat is between the house and the fence
+			The cat is between the fence and the tree
+			The house is between the fence and the tree</ex>
+		<PT>{NP1} is between {NP2} and {NP3}
+			{NP1} is between {NP3} and {NP4}
+			{NP2} is between {NP3} and {NP4}</PT>
+		<SR>between_of(NP1,NP4); between_of(NP2,NP3); between_of(NP2,NP4)</SR>
+	</problem>
+	<problem id="80" label="contradiction" src="LA" exp="between">
+		<ex>The cat is between the house and the fence
+			The cat is between the fence and the tree
+			The cat is between the house and the tree</ex>
+		<PT>{NP1} is between {NP2} and {NP3}
+			{NP1} is between {NP3} and {NP4}
+			{NP1} is between {NP2} and {NP4}</PT>
+		<SR>between_of(NP1,NP4)</SR>
+	</problem>
+	<problem id="81" label="neutral" src="LA" exp="between">
+		<ex>The cat is between the house and the fence
+			The cat is between the fence and the tree
+			The house is between the tree and the cat</ex>
+		<PT>{NP1} is between {NP2} and {NP3}
+			{NP1} is between {NP3} and {NP4}
+			{NP2} is between {NP4} and {NP1}</PT>
+		<SR>between_of(NP1,NP4); between_of(NP2,NP1); between_of(NP2,NP4)</SR>
+	</problem>
+	<problem id="82" label="neutral" src="LA" exp="between">
+		<ex>The cat is between the house and the fence
+			The cat is between the fence and the tree
+			The tree is between the house and the cat</ex>
+		<PT>{NP1} is between {NP2} and {NP3}
+			{NP1} is between {NP3} and {NP4}
+			{NP4} is between {NP2} and {NP1}</PT>
+		<SR>between_of(NP1,NP4); between_of(NP4,NP1); between_of(NP4,NP1)</SR>
+	</problem>
+	<problem id="83" label="neutral" src="LA" exp="between">
+		<ex>The cat is between the house and the fence
+			The cat is between the fence and the tree
+			The tree is between the house and the fence</ex>
+		<PT>{NP1} is between {NP2} and {NP3}
+			{NP1} is between {NP3} and {NP4}
+			{NP4} is between {NP2} and {NP3}</PT>
+		<SR>between_of(NP1,NP4); between_of(NP4,NP2); between_of(NP4,NP3)</SR>
+	</problem>
+	<problem id="84" label="contradiction" src="LA" exp="between">
+		<ex>The cat is between the house and the fence
+			The cat is between the fence and the tree
+			The fence is between the house and the tree</ex>
+		<PT>{NP1} is between {NP2} and {NP3}
+			{NP1} is between {NP3} and {NP4}
+			{NP3} is between {NP2} and {NP4}</PT>
+		<SR>between_of(NP1,NP4); between_of(NP3,NP2); between_of(NP3,NP4)</SR>
+	</problem>
+	<problem id="85" label="entailment" src="Zwarts_Winter:2000" exp="between">
+		<ex>The cat is between the house and the fence
+			The house is between the fence and the tree
+			The cat is between the fence and the tree</ex>
+		<PT>{NP1} is between {NP2} and {NP3}
+			{NP2} is between {NP3} and {NP4}
+			{NP1} is between {NP3} and {NP4}</PT>
+		<SR>between_of(NP1,NP4); between_of(NP2,NP3); between_of(NP2,NP4)</SR>
+	</problem>
+	<!-- Ading 85a and 86a for slightly balancing the labels -->
+	<problem id="85a" label="entailment" src="LA" exp="between">
+		<ex>The cat is between the house and the fence
+			The house is between the fence and the tree
+			The cat is between the tree and the fence</ex>
+		<PT>{NP1} is between {NP2} and {NP3}
+			{NP2} is between {NP3} and {NP4}
+			{NP1} is between {NP4} and {NP3}</PT>
+		<SR>between_of(NP1,NP4); between_of(NP2,NP3); between_of(NP2,NP4)</SR>
+	</problem>
+	<problem id="86" label="entailment" src="LA" exp="between">
+		<ex>The cat is between the house and the fence
+			The house is between the fence and the tree
+			The house is between the tree and the cat</ex>
+		<PT>{NP1} is between {NP2} and {NP3}
+			{NP2} is between {NP3} and {NP4}
+			{NP2} is between {NP4} and {NP1}</PT>
+		<SR>between_of(NP2,NP3); between_of(NP2,NP4); between_of(NP2,NP1)</SR>
+	</problem>
+	<problem id="86a" label="entailment" src="LA" exp="between">
+		<ex>The cat is between the house and the fence
+			The house is between the fence and the tree
+			The house is between the cat and the tree</ex>
+		<PT>{NP1} is between {NP2} and {NP3}
+			{NP2} is between {NP3} and {NP4}
+			{NP2} is between {NP1} and {NP4}</PT>
+		<SR>between_of(NP2,NP3); between_of(NP2,NP4); between_of(NP2,NP1)</SR>
+	</problem>
+	<problem id="87" label="contradiction" src="LA" exp="between">
+		<ex>The cat is between the house and the fence
+			The house is between the fence and the tree
+			The tree is between the house and the cat</ex>
+		<PT>{NP1} is between {NP2} and {NP3}
+			{NP2} is between {NP3} and {NP4}
+			{NP4} is between {NP2} and {NP1}</PT>
+		<SR>between_of(NP2,NP3); between_of(NP2,NP4);
+			between_of(NP4,NP1); between_of(NP4,NP2)</SR>
+	</problem>
+	<problem id="88" label="contradiction" src="LA" exp="between">
+		<ex>The cat is between the house and the fence
+			The house is between the fence and the tree
+			The cat is between the house and the tree</ex>
+		<PT>{NP1} is between {NP2} and {NP3}
+			{NP2} is between {NP3} and {NP4}
+			{NP1} is between {NP2} and {NP4}</PT>
+		<SR>between_of(NP1,NP4); between_of(NP2,NP3); between_of(NP2,NP4)</SR>
+	</problem>
+	<problem id="89" label="contradiction" src="LA" exp="between">
+		<ex>The cat is between the house and the fence
+			The house is between the fence and the tree
+			The fence is between the tree and the cat</ex>
+		<PT>{NP1} is between {NP2} and {NP3}
+			{NP2} is between {NP3} and {NP4}
+			{NP3} is between {NP4} and {NP1}</PT>
+		<SR>between_of(NP2,NP3); between_of(NP2,NP4);
+			between_of(NP3,NP1); between_of(NP3,NP4)</SR>
+	</problem>
+	<problem id="90" label="contradiction" src="LA" exp="between">
+		<ex>The cat is between the house and the fence
+			The house is between the fence and the tree
+			The tree is between the fence and the cat</ex>
+		<PT>{NP1} is between {NP2} and {NP3}
+			{NP2} is between {NP3} and {NP4}
+			{NP4} is between {NP3} and {NP1}</PT>
+		<SR>between_of(NP2,NP3); between_of(NP2,NP4);
+			between_of(NP4,NP1); between_of(NP4,NP3)</SR>
+	</problem>
+	<problem id="91" label="neutral" src="LA" exp="between">
+		<ex>The cat is between the house and the fence
+			The tree is between the house and the fence
+			The tree is between the house and the cat</ex>
+		<PT>{NP1} is between {NP2} and {NP3}
+			{NP4} is between {NP2} and {NP3}
+			{NP4} is between {NP2} and {NP1}</PT>
+		<SR>between_of(NP4,NP1); between_of(NP4,NP2); between_of(NP4,NP3)</SR>
+	</problem>
+	<problem id="92" label="contradiction" src="LA" exp="between">
+		<ex>The cat is between the house and the fence
+			The tree is between the house and the fence
+			The house is between the tree and the cat</ex>
+		<PT>{NP1} is between {NP2} and {NP3}
+			{NP4} is between {NP2} and {NP3}
+			{NP2} is between {NP4} and {NP1}</PT>
+		<SR>between_of(NP4,NP2); between_of(NP4,NP3);
+			between_of(NP2,NP4); between_of(NP2,NP1)</SR>
+	</problem>
+	<problem id="93" label="neutral" src="LA" exp="between">
+		<ex>The cat is between the house and the fence
+			The tree is between the house and the fence
+			The cat is between the fence and the tree</ex>
+		<PT>{NP1} is between {NP2} and {NP3}
+			{NP4} is between {NP2} and {NP3}
+			{NP1} is between {NP3} and {NP4}</PT>
+		<SR>between_of(NP1,NP4); between_of(NP4,NP2); between_of(NP4,NP3)</SR>
+	</problem>
+	<problem id="94" label="contradiction" src="LA" exp="between">
+		<ex>The cat is between the house and the fence
+			The tree is between the house and the fence
+			The fence is between the tree and the cat</ex>
+		<PT>{NP1} is between {NP2} and {NP3}
+			{NP4} is between {NP2} and {NP3}
+			{NP3} is between {NP4} and {NP1}</PT>
+		<SR>between_of(NP3,NP1); between_of(NP3,NP4);
+			between_of(NP4,NP2); between_of(NP4,NP3)</SR>
+	</problem>
+	<SR>between_of(NP1,NP2); between_of(NP1,NP3); animal(NP1)</SR>
+	<BL>diff_values([NP1, NP2, NP3, NP4])</BL>
+	<FT>NP1[+det]; NP2[+det]; NP3[+det]; NP4[+det]</FT>
+</group>
+
+
+<group seed="94a" ent_type="non-projective">
+	<problem id="94a" label="entailment" src="JZ" exp="between, close to">
+		<ex>The cat is between the house and the fence
+			The fence is close to the house
+			The cat is close to the fence</ex>
+		<PT>{NP2} is between {NP1} and {NP3}
+			{NP3} is close to {NP1}
+			{NP2} is close to {NP3}</PT>
+	</problem>
+	<problem id="94a1" label="neutral" src="LA" exp="between, close to">
+		<ex>The cat is between the house and the fence
+			The house is close to the cat
+			The cat is close to the fence</ex>
+		<PT>{NP2} is between {NP1} and {NP3}
+			{NP1} is close to {NP2}
+			{NP2} is close to {NP3}</PT>
+	</problem>
+	<problem id="94a2" label="contradiction" src="LA" exp="between, close to, far from">
+		<ex>The cat is between the house and the fence
+			The house is far from the cat
+			The fence is close to the house</ex>
+		<PT>{NP2} is between {NP1} and {NP3}
+			{NP1} is far from {NP2}
+			{NP3} is close to {NP1}</PT>
+	</problem>
+	<problem id="94a3" label="neutral" src="LA" exp="between, close to, far from">
+		<ex>The cat is between the house and the fence
+			The fence is far from the house
+			The cat is close to the fence</ex>
+		<PT>{NP2} is between {NP1} and {NP3}
+			{NP3} is far from {NP1}
+			{NP2} is close to {NP3}</PT>
+	</problem>
+	<SR>between_of(NP2,NP1); between_of(NP2,NP3);
+		near(NP2,NP3); near(NP1,NP3); near(NP1,NP2)</SR>
+	<BL>diff_values([NP1, NP2, NP3])</BL>
+	<FT>NP1[+det]; NP2[+det]; NP3[+det]</FT>
+</group>
+
+
+
+<problem id="94b" label="entailment" src="JZ" rel="94">
+	<ex>The stairs are between the window and the door
+		The window is above the door
+		The window is above the stairs</ex>
+	<note>the axis of between might be perpendicular to above axis</note>
+</problem>
+
+<problem id="94c" label="entailment" src="JZ" rel="94">
+	<ex>The stairs are between the window and the door
+		The window is above the door
+		The stairs is above the door</ex>
+	<note>the axis of between might be perpendicular to above axis</note>
+</problem>
+
+
+
+<group seed="95" ent_type="argument orientation">
+	<problem id="95" label="entailment" src="CR" exp="at">
+		<ex>John has left the dog at the house
+			John was at the house</ex>
+		<ex>Cindi has left John at the store
+			Cindi was at the store</ex>
+		<ex>Cindi has left the cat at the market
+			Cindi was at the market</ex>
+		<PT>{NP1} has left {NP2} at {NP3}
+			{NP1} was at {NP3}</PT>
+		<SR>at(NP2,NP3); at(NP1,NP3)</SR>
+	</problem>
+	<problem id="95a" label="neutral" src="CR" exp="at">
+		<ex>John has left the dog at the house
+			John has left the house at once</ex>
+		<ex>John has left Mary at the building
+			John has left the building at once</ex>
+		<ex>John has left the girl at the house
+			John has left the house at once</ex>
+		<PT>{NP1} has left {NP2} at {NP3}
+			{NP1} has left {NP3} at once</PT>
+		<SR>at(NP2,NP3); leave(NP1,NP3)</SR>
+	</problem>
+	<problem id="95b" label="contradiction" src="LA" exp="at, with">
+		<ex>John has left the dog at the house
+			John is with the dog</ex>
+		<ex>The boy has left the cat at the park
+			The boy is with the cat</ex>
+		<ex>The boy has left the girl at the park
+			The boy is with the girl</ex>
+		<PT>{NP1} has left {NP2} at {NP3}
+			{NP1} is with {NP2}</PT>
+		<SR>at(NP2,NP3); be_with(NP1,NP2)</SR>
+	</problem>
+	<!-- <problem id="95c" label="neutral" src="CR" exp="in, at" status="x">
+		<ex>John has left the dog in the car
+			John was at the house</ex>
+		<PT>NP1 left NP2 in NP4
+			NP1 was at NP3</PT>
+		<SR>at(NP1,NP3); in(NP2,NP4)</SR>
+	</problem> -->
+	<!-- <problem id="95d" label="contradiction" src="CR" exp="at" status="x">
+		<ex>John was never at the house
+			John was at the house</ex>
+		<PT>NP1 was never at NP3
+			NP1 was at NP3</PT>
+		<SR>at(NP1,NP3)</SR>
+	</problem> -->
+	<!-- <FT>NP1[+det]; NP2[+det]; NP3[+det]; NP4[+det]</FT> -->
+	<SR>abandon(NP1,NP2); in(NP2,NP3)</SR>
+	<BL>diff_values([NP1, NP2, NP3])</BL>
+</group>
+
+
+<group seed="96" ent_type="argument orientation">
+	<problem id="96" label="entailment" src="CR" exp="at">
+		<ex>Mary met John at the party
+			John was at the party</ex>
+		<ex>Cindi met Mary at the garden
+			Mary was at the garden</ex>
+		<ex>The dog met Mary at the house
+			Mary was at the house</ex>
+		<PT>{NP1} met {NP2} at {NP3}
+			{NP2} was at {NP3}</PT>
+	</problem>
+	<problem id="96a" label="contradiction" src="CR" exp="at">
+		<ex>Mary met John at the party
+			Mary was not at the party</ex>
+		<ex>The dog met the girl at the building
+			The dog was not at the building</ex>
+		<ex>The girl met Mary at the park
+			The girl was not at the park</ex>
+		<PT>{NP1} met {NP2} at {NP3}
+			{NP1} was not at {NP3}</PT>
+	</problem>
+	<problem id="96b" label="neutral" src="LA" exp="at">
+		<ex>Mary met John at the party
+			Cindi was not at the party</ex>
+		<ex>John met the cat at the market
+			Cindi was not at the market</ex>
+		<ex>The boy met Cindi at the forest
+			The dog was not at the forest</ex>
+		<PT>{NP1} met {NP2} at {NP3}
+			{NP4} was not at {NP3}</PT>
+		<SR>at(NP4,NP3)</SR>
+		<BL>diff_values([NP1, NP2, NP3, NP4])</BL>
+	</problem>
+	<!-- <problem id="96c" label="neutral" src="LA" exp="at" status="x">
+		<ex>Mary wanted to meet John at the party
+			Mary wanted to be at the party</ex>
+		<PT>NP1 wanted to meet NP2 at NP3
+			NP1 wanted to be at NP3</PT>
+		<SR>want(NP1)</SR>
+	</problem> -->
+	<!-- <FT>NP1[+det]; NP2[+det]; NP3[+det]; NP4[+det]</FT> -->
+	<SR>meet(NP1,NP2); at(NP1,NP3); at(NP2,NP3)</SR>
+	<BL>diff_values([NP1, NP2, NP3])</BL>
+</group>
+
+<group seed="97" ent_type="argument orientation">
+	<problem id="97" label="entailment" src="LA" exp="away from, with">
+		<ex>John has taken the toy away from Mary
+			The toy is not with Mary</ex>
+		<ex>John has taken the bowl away from Mary
+			The bowl is not with Mary</ex>
+		<ex>John has taken the key away from the dog
+			The key is not with the dog</ex>
+		<PT>{NP1} has taken {NP2} away from {NP3}
+			{NP2} is not with {NP3}</PT>
+		<SR>be_with(NP2,NP3)</SR>
+	</problem>
+	<problem id="97a" label="neutral" src="CR" exp="away from, out of">
+		<ex>John has taken the toy away from Mary
+			The toy is out of Mary's sight</ex>
+		<ex>Cindi has taken the stone away from the girl
+			The stone is out of the girl's sight</ex>
+		<ex>Cindi has taken the toy away from the dog
+			The toy is out of the dog's sight</ex>
+		<PT>{NP1} has taken {NP2} away from {NP3}
+			{NP2} is out of {NP3}'s sight</PT>
+		<SR>invisible_to(NP2,NP3); apos_s(NP3)</SR>
+	</problem>
+	<problem id="97b" label="contradiction" src="LA" exp="away from, with">
+		<ex>John has taken the toy away from Mary
+			The toy is with Mary</ex>
+		<ex>Mary has taken the key away from the girl
+			The key is with the girl</ex>
+		<ex>The girl has taken the cabbage away from the boy
+			The cabbage is with the boy</ex>
+		<PT>{NP1} has taken {NP2} away from {NP3}
+			{NP2} is with {NP3}</PT>
+		<SR>be_with(NP2,NP3)</SR>
+	</problem>
+	<!-- <FT>NP1[+det]; NP2[+det]; NP3[+det]</FT> -->
+	<SR>take_away_from(NP1,NP2,NP3)</SR>
+	<BL>diff_values([NP1, NP2, NP3])</BL>
+</group>
+
+
+
+<!-- <group>
+	<problem id="98" label="entailment" src="CR" exp="below, above" status="x">
+		<ex>Mary was 6 feet below sea level
+			Mary was not above the ground</ex>
+		<PT>NP1 was NP2 below sea level
+			NP1 was not above the ground</PT>
+		<note src="LA">seems neutral</note>
+	</problem>
+	<problem id="98a" label="contradiction" src="CR" exp="on top of, above" status="x">
+		<ex>Mary was on top of the mountain
+			Mary was not above the ground</ex>
+		<PT>NP1 was on top of NP3
+			NP1 was not above the ground</PT>
+		<SR>on_top_of(NP1,NP3); on_ground(NP3)</SR>
+	</problem>
+	<problem id="98b" label="contradiction" src="CR" exp="below, above" status="x">
+		<ex>Mary was not below sea level
+			Mary was not above the ground</ex>
+		<PT>NP1 was not below sea level
+			NP1 was not above the ground</PT>
+	</problem>
+	<problem id="98c" label="entailment" src="CR" exp="below, above" status="x">
+		<ex>Mary was below sea level
+			Mary was not above the ground</ex>
+		<PT>NP1 was below sea level
+			NP1 was not above the ground</PT>
+	</problem>
+	<problem id="98d" label="contradiction" src="CR" exp="below, above" status="x">
+		<ex>Mary was below sea level
+			Mary was above the ground</ex>
+		<PT>NP1 was below sea level
+			NP1 was above the ground</PT>
+	</problem>
+	<problem id="98e" label="neutral" src="CR" exp="below, in" status="x">
+		<ex>Mary was 6 feet below sea level
+			Mary was in the water</ex>
+		<PT>NP1 was NP2 below sea level
+			NP1 was in NP4</PT>
+	</problem>
+	<problem id="98f" label="neutral" src="CR" exp="above, in" status="x">
+		<ex>Mary was 6 feet above sea level
+			Mary was in the water</ex>
+		<PT>NP1 was NP2 above sea level
+			NP1 was in NP4</PT>
+	</problem>
+	<problem id="98g" label="contradiction" src="CR" exp="below, above" status="x">
+		<ex>Mary was 6 feet below sea level
+			Mary was 6 feet above sea level</ex>
+		<PT>NP1 was NP2 below sea level
+			NP1 was NP2 above sea level</PT>
+		<SR>person_animal(NP1)</SR>
+	</problem>
+	<FT>NP1[+det]; NP2[+det]; NP3[+det]; NP4[+det]</FT>
+	<SR>stand(NP1); body_of_water(NP4); measure(NP2)</SR>
+</group> -->
+
+<group ent_type="projective">
+	<!-- has too few samples -->
+	<!-- <problem id="99" label="entailment" src="CR" exp="above, below">
+		<ex>^The ground floor is below the first floor
+			The ground floor is above the basement
+			The first floor is above the basement</ex>
+		<ex>^The ground floor is below the second floor
+			The ground floor is above the basement
+			The second floor is above the basement</ex>
+		<ex>^The first floor is below the second floor
+			The first floor is above the ground floor
+			The second floor is above the ground floor</ex>
+		<PT>^{NP2} is below {NP3}
+			{NP2} is above {NP1}
+			{NP3} is above {NP1}</PT>
+		<SR>k_above(NP3,NP2); above(NP3,NP1)</SR>
+	</problem> -->
+	<problem id="99a" label="contradiction" src="CR" exp="below, above">
+		<ex>The pencil is below the bucket
+			The pencil is above the bucket</ex>
+		<ex>The box is below the watch
+			The box is above the watch</ex>
+		<ex>The bucket is below the toy
+			The bucket is above the toy</ex>
+		<PT>{NP1} is below {NP2}
+			{NP1} is above {NP2}</PT>
+	</problem>
+	<problem id="99b" label="contradiction" src="CR" exp="above">
+		<ex>The bucket is above the bowl
+			The bowl is above the bucket</ex>
+		<ex>The box is above the cup
+			The cup is above the box</ex>
+		<ex>The watch is above the ball
+			The ball is above the watch</ex>
+		<PT>{NP1} is above {NP2}
+			{NP2} is above {NP1}</PT>
+	</problem>
+	<!-- <FT>NP1[+det]; NP2[+det]; NP3[+det]</FT> -->
+	<SR>above(NP2,NP1); above(NP1,NP2)</SR>
+	<BL>diff_values([NP1, NP2])</BL>
+</group>
+
+
+<group ent_type="projective">
+	<problem id="99*a" label="entailment" src="LA" exp="below, above">
+		<ex>The pencil is below the bucket
+			The stone is above the bucket
+			The pencil is below the stone</ex>
+		<ex>The stone is below the bucket
+			The pencil is above the bucket
+			The stone is below the pencil</ex>
+		<PT>{NP1} is below {NP2}
+			{NP3} is above {NP2}
+			{NP1} is below {NP3}</PT>
+		<SR>above(NP2,NP1); above(NP3,NP2); above(NP3,NP1)</SR>
+	</problem>
+	<problem id="99*b" label="neutral" src="LA" exp="below, above">
+		<ex>The pencil is below the bucket
+			The stone is below the bucket
+			The pencil is above the stone</ex>
+		<ex>The stone is below the bucket
+			The pencil is below the bucket
+			The stone is above the pencil</ex>
+		<PT>{NP1} is below {NP2}
+			{NP3} is below {NP2}
+			{NP1} is above {NP3}</PT>
+		<SR>above(NP2,NP1); above(NP2,NP3); above(NP1,NP3)</SR>
+	</problem>
+	<problem id="99*c" label="entailment" src="LA" exp="above, below">
+		<ex>The bucket is above the bowl
+			The pencil is above the bucket
+			The bowl is below the pencil</ex>
+		<ex>The box is above the cup
+			The apple is above the box
+			The cup is below the apple</ex>
+		<PT>{NP1} is above {NP2}
+			{NP3} is above {NP1}
+			{NP2} is below {NP3}</PT>
+		<SR>above(NP1,NP2); above(NP3,NP1); above(NP3,NP2)</SR>
+	</problem>
+	<problem id="99*d" label="neutral" src="LA" exp="above, below">
+		<ex>The bucket is above the bowl
+			The pencil is above the bowl
+			The bucket is below the pencil</ex>
+		<ex>The box is above the cup
+			The apple is above the cup
+			The box is below the apple</ex>
+		<PT>{NP1} is above {NP2}
+			{NP3} is above {NP2}
+			{NP1} is below {NP3}</PT>
+		<SR>above(NP1,NP2); above(NP3,NP2); above(NP3,NP1)</SR>
+	</problem>
+	<BL>diff_values([NP1, NP2, NP3])</BL>
+</group>
+
+
+
+<group ent_type="non-projective">
+	<problem id="100" label="entailment" src="CR" exp="far from">
+		<ex>The house is far from the school
+			The school is far from the house</ex>
+		<ex>The boy is far from the cat
+			The cat is far from the boy</ex>
+		<ex>The cupboard is far from the cabbage
+			The cabbage is far from the cupboard</ex>
+		<PT>{NP1} is far from {NP2}
+			{NP2} is far from {NP1}</PT>
+	</problem>
+	<!-- <problem id="100a" label="contradiction" src="CR" exp="opposite, far from" status="x">
+		<ex>The school is opposite to the house
+			The school is far from the house</ex>
+		<PT>NP2 is opposite to NP1
+			NP2 is far from NP1</PT>
+		<note src="LA">neutral probably, depends on the object sizes. Received mixed annotations</note>
+	</problem> -->
+	<problem id="100b" label="neutral" src="CR" exp="far from">
+		<ex>The school is far from the house
+			The hospital is far from the house</ex>
+		<ex>The cat is far from Mary
+			The truck is far from Mary</ex>
+		<ex>The watermelon is far from the dog
+			The wardrobe is far from the dog</ex>
+		<PT>{NP2} is far from {NP1}
+			{NP3} is far from {NP1}</PT>
+		<SR>far_from(NP3,NP1)</SR>
+	</problem>
+	<problem id="100c" label="neutral" src="CR" exp="opposite, far from">
+		<ex>The school is opposite to the house
+			The hospital is far from the house</ex>
+		<ex>The car is opposite to John
+			The watch is far from John</ex>
+		<ex>The cup is opposite to the dog
+			The bucket is far from the dog</ex>
+		<PT>{NP2} is opposite to {NP1}
+			{NP3} is far from {NP1}</PT>
+		<SR>far_from(NP3,NP1)</SR>
+	</problem>
+	<!-- <FT>NP1[+det]; NP2[+det]; NP3[+det]</FT> -->
+	<SR>opposite(NP2,NP1); far_from(NP2,NP1)</SR>
+	<!-- far_from & opposite are symmetric in sel-restriction -->
+	<BL>diff_values([NP1, NP2])</BL>
+</group>
+
+<group ent_type="argument orientation">
+	<problem id="101" label="entailment" src="CR" exp="from, at">
+		<ex>John brought the pumpkin from the market
+			John was at the market</ex>
+		<ex>Cindi brought the dog from the house
+			Cindi was at the house</ex>
+		<ex>John brought the pencil from the bridge
+			John was at the bridge</ex>
+		<PT>{NP1} brought {NP2} from {NP3}
+			{NP1} was at {NP3}</PT>
+		<SR>at(NP1,NP3)</SR>
+	</problem>
+	<!-- <problem id="101a" label="neutral" src="CR" exp="from, at" status="x">
+		<ex>John brought the pumpkin from the market
+			John was at the store</ex>
+		<PT>NP1 brought NP2 from NP4
+			NP1 was at NP3</PT>
+		<SR>at(NP1,NP4)</SR>
+		<note src="LA">NP3 not in the premise causes ambiguity in annotation related to CWA</note>
+	</problem> -->
+	<!-- <problem id="101b" label="entailment" src="CR" exp="from, inside" status="x">
+		<ex>John brought the pumpkin from the market
+			John was inside the market</ex>
+		<PT>NP1 brought NP2 from NP3
+			NP1 was inside NP3</PT>
+		<SR>inside(NP1,NP3)</SR>
+		<note src="LA">bring X from Y doesn't necessarily mean being inside Y</note>
+	</problem> -->
+	<problem id="101b" label="entailment" src="LA" exp="from, near">
+		<ex>John brought the pumpkin from the market
+			John was near the market</ex>
+		<ex>John brought the cat from the market
+			John was near the market</ex>
+		<ex>John brought the cat from the tower
+			John was near the tower</ex>
+		<PT>{NP1} brought {NP2} from {NP3}
+			{NP1} was near {NP3}</PT>
+		<SR>near(NP1,NP3)</SR>
+	</problem> -->
+	<problem id="101c" label="neutral" src="CR" exp="from, near">
+		<ex>John brought the pumpkin from the market
+			John lives near the market</ex>
+		<ex>Mary brought the toy from the house
+			Mary lives near the house</ex>
+		<ex>The boy brought the watch from the school
+			The boy lives near the school</ex>
+		<PT>{NP1} brought {NP2} from {NP3}
+			{NP1} lives near {NP3}</PT>
+		<SR>live_near(NP1,NP3)</SR>
+	</problem>
+	<problem id="101d" label="neutral" src="CR" exp="from, far from">
+		<ex>John brought the pumpkin from the market
+			John lives far from the market</ex>
+		<ex>The boy brought the bowl from the bridge
+			The boy lives far from the bridge</ex>
+		<ex>The boy brought the watch from the store
+			The boy lives far from the store</ex>
+		<PT>{NP1} brought {NP2} from {NP3}
+			{NP1} lives far from {NP3}</PT>
+		<SR>live_near(NP1,NP3)</SR>
+	</problem>
+	<!-- <FT>NP1[+det]; NP2[+det]; NP3[+det]; NP4[+det]</FT> -->
+	<SR>bring_from(NP1,NP2,NP3)</SR>
+	<BL>diff_values([NP1, NP2, NP3])</BL>
+</group>
+
+
+<group ent_type="argument orientation">
+	<problem id="102" label="entailment" src="CR" exp="in">
+		<ex>Mary has put the cup in the cabinet
+			The cup is in the cabinet</ex>
+		<ex>John has put the ball in the fridge
+			The ball is in the fridge</ex>
+		<ex>Mary has put Cindi in the hospital
+			Cindi is in the hospital</ex>
+		<PT>{NP1} has put {NP2} in {NP3}
+			{NP2} is in {NP3}</PT>
+		<SR>put(NP1,NP2); in(NP2,NP3)</SR>
+	</problem>
+	<problem id="102*" label="entailment" src="CR" exp="inside">
+		<ex>John has put the watch inside the box
+			The watch is inside the box</ex>
+		<ex>Cindi has put the key inside the cup
+			The key is inside the cup</ex>
+		<ex>Mary has put the key inside the cup
+			The key is inside the cup</ex>
+		<PT>{NP1} has put {NP2} inside {NP3}
+			{NP2} is inside {NP3}</PT>
+		<SR>put(NP1,NP2); inside(NP2,NP3)</SR>
+	</problem>
+	<problem id="102*a" label="contradiction" src="CR" exp="inside">
+		<ex>John has put the watch inside the box
+			The watch is not inside the box</ex>
+		<ex>Cindi has put the bowl inside the locker
+			The bowl is not inside the locker</ex>
+		<ex>The girl has put the pencil inside the locker
+			The pencil is not inside the locker</ex>
+		<PT>{NP1} has put {NP2} inside {NP3}
+			{NP2} is not inside {NP3}</PT>
+		<SR>put(NP1,NP2); inside(NP2,NP3)</SR>
+	</problem>
+	<problem id="102a" label="contradiction" src="CR" exp="out of, in">
+		<ex>Mary has taken the cup out of the cabinet
+			The cup is in the cabinet</ex>
+		<ex>Cindi has taken the stone out of the box
+			The stone is in the box</ex>
+		<ex>Cindi has taken the stone out of the wardrobe
+			The stone is in the wardrobe</ex>
+		<PT>{NP1} has taken {NP2} out of {NP3}
+			{NP2} is in {NP3}</PT>
+		<SR>take(NP1,NP2); out_of(NP2,NP3)</SR>
+	</problem>
+	<problem id="102b" label="entailment" src="CR" exp="out of, in">
+		<ex>Mary has taken the cup out of the cabinet
+			The cup is not in the cabinet</ex>
+		<ex>Cindi has taken the boy out of the room
+			The boy is not in the room</ex>
+		<ex>Mary has taken John out of the station
+			John is not in the station</ex>
+		<PT>{NP1} has taken {NP2} out of {NP3}
+			{NP2} is not in {NP3}</PT>
+		<SR>take(NP1,NP2); in(NP2,NP3)</SR>
+	</problem>
+	<problem id="102b*" label="entailment" src="CR" exp="out of, inside">
+		<ex>John has taken the watch out of the box
+			The watch is not inside the box</ex>
+		<ex>Mary has taken the watch out of the cup
+			The watch is not inside the cup</ex>
+		<ex>The boy has taken the bowl out of the cupboard
+			The bowl is not inside the cupboard</ex>
+		<PT>{NP1} has taken {NP2} out of {NP3}
+			{NP2} is not inside {NP3}</PT>
+		<SR>take(NP1,NP2); in(NP2,NP3)</SR>
+	</problem>
+	<problem id="102c" label="contradiction" src="CR" exp="on top of, in">
+		<ex>Mary has put the cup on top of the cabinet
+			The cup is in the cabinet</ex>
+		<ex>Cindi has put Mary on top of the bus
+			Mary is in the bus</ex>
+		<ex>Cindi has put the toy on top of the box
+			The toy is in the box</ex>
+		<PT>{NP1} has put {NP2} on top of {NP3}
+			{NP2} is in {NP3}</PT>
+		<SR>put(NP1,NP2); on_top_of(NP2,NP3); in(NP2,NP3)</SR>
+	</problem>
+	<problem id="102d" label="contradiction" src="CR" exp="under, in">
+		<ex>Mary has hidden the cup under the cabinet
+			The cup is in the cabinet</ex>
+		<ex>John has hidden the ball under the wardrobe
+			The ball is in the wardrobe</ex>
+		<ex>The boy has hidden the dog under the bus
+			The dog is in the bus</ex>
+		<PT>{NP1} has hidden {NP2} under {NP3}
+			{NP2} is in {NP3}</PT>
+		<SR>hide(NP1,NP2); under(NP2,NP3); in(NP2,NP3)</SR>
+	</problem>
+	<problem id="102e" label="entailment" src="CR" exp="under, in">
+		<ex>Mary has hidden the cup under the cabinet
+			The cup is not in the cabinet</ex>
+		<ex>Cindi has hidden the ball under the box
+			The ball is not in the box</ex>
+		<ex>John has hidden the pencil under the bowl
+			The pencil is not in the bowl</ex>
+		<PT>{NP1} has hidden {NP2} under {NP3}
+			{NP2} is not in {NP3}</PT>
+		<SR>hide(NP1,NP2); under(NP2,NP3); in(NP2,NP3)</SR>
+	</problem>
+	<problem id="102f" label="entailment" src="CR" exp="behind, in">
+		<ex>Mary has hidden the cup behind the cabinet
+			The cup is not in the cabinet</ex>
+		<ex>John has hidden the bucket behind the wardrobe
+			The bucket is not in the wardrobe</ex>
+		<ex>The boy has hidden the dog behind the station
+			The dog is not in the station</ex>
+		<PT>{NP1} has hidden {NP2} behind {NP3}
+			{NP2} is not in {NP3}</PT>
+		<SR>hide(NP1,NP2); behind_of(NP2,NP3); in(NP2,NP3)</SR>
+	</problem>
+	<BL>diff_values([NP1, NP2, NP3])</BL>
+</group>
+
+<group ent_type="projective">
+	<problem id="103" label="entailment" src="CR" exp="on top of, under">
+		<ex>The watch is on top of the box
+			The box is under the watch</ex>
+		<ex>The bucket is on top of the stone
+			The stone is under the bucket</ex>
+		<ex>The cup is on top of the watch
+			The watch is under the cup</ex>
+		<PT>{NP1} is on top of {NP2}
+			{NP2} is under {NP1}</PT>
+		<SR>under(NP2,NP1)</SR>
+	</problem>
+	<problem id="103a" label="contradiction" src="CR" exp="on top of, under">
+		<ex>The watch is on top of the box
+			The watch is under the box</ex>
+		<ex>The ball is on top of the cup
+			The ball is under the cup</ex>
+		<ex>The bowl is on top of the stone
+			The bowl is under the stone</ex>
+		<PT>{NP1} is on top of {NP2}
+			{NP1} is under {NP2}</PT>
+		<SR>under(NP1, NP2)</SR>
+	</problem>
+	<problem id="103b" label="contradiction" src="LA" exp="on top of">
+		<ex>The watch is on top of the box
+			The box is on top of the watch</ex>
+		<ex>The bowl is on top of the stone
+			The stone is on top of the bowl</ex>
+		<ex>The bucket is on top of the stone
+			The stone is on top of the bucket</ex>
+		<PT>{NP1} is on top of {NP2}
+			{NP2} is on top of {NP1}</PT>
+		<SR>on_top_of(NP2,NP1)</SR>
+	</problem>
+	<problem id="103c" label="contradiction" src="LA" exp="on top of">
+		<ex>The watch is on top of the box
+			The box is on top of the fridge</ex>
+		<ex>Cindi is on top of the bus
+			The bus is on top of the bridge</ex>
+		<ex>The watch is on top of the bowl
+			The bowl is on top of the ball</ex>
+		<PT>{NP1} is on top of {NP2}
+			{NP2} is on top of {NP3}</PT>
+		<SR>on_top_of(NP2,NP3)</SR>
+	</problem>
+	<SR>on_top_of(NP1,NP2)</SR>
+	<BL>diff_values([NP1, NP2])</BL>
+</group>
+
+<group ent_type="non-projective">
+	<problem id="104" label="entailment" src="CR" exp="on top of, on">
+		<ex>John is on top of the bridge
+			John is on the bridge</ex>
+		<ex>Cindi is on top of the mountain
+			Cindi is on the mountain</ex>
+		<ex>The stone is on top of the bucket
+			The stone is on the bucket</ex>
+		<PT>{NP1} is on top of {NP2}
+			{NP1} is on {NP2}</PT>
+	</problem>
+	<problem id="104a" label="contradiction" src="CR" exp="on top of, on">
+		<ex>John is on top of the bridge
+			John is not on the bridge</ex>
+		<ex>The bucket is on top of the cupboard
+			The bucket is not on the cupboard</ex>
+		<ex>The cat is on top of the truck
+			The cat is not on the truck</ex>
+		<PT>{NP1} is on top of {NP2}
+			{NP1} is not on {NP2}</PT>
+		<note src="LA">Negation in present tense is easier to process than in past tense as the latter raises ambiguity in terms of the negation scope</note>
+	</problem>
+	<SR>on(NP1,NP2); on_top_of(NP1,NP2)</SR>
+	<BL>diff_values([NP1, NP2])</BL>
+</group>
+
+<group ent_type="directional">
+	<problem id="104d" label="neutral" src="CR" exp="towards, on">
+		<ex>John has walked towards the stage
+			John is on the stage</ex>
+		<ex>Cindi has walked towards the rooftop
+			Cindi is on the rooftop</ex>
+		<ex>The dog has walked towards the bus
+			The dog is on the bus</ex>
+		<PT>{NP1} has walked towards {NP2}
+			{NP1} is on {NP2}</PT>
+	</problem>
+	<problem id="104d*" label="contradiction" src="LA" exp="towards, on">
+		<ex>John is walking towards the stage
+			John is on the stage</ex>
+		<ex>Cindi is walking towards the rug
+			Cindi is on the rug</ex>
+		<ex>The cat is walking towards the playground
+			The cat is on the playground</ex>
+		<PT>{NP1} is walking towards {NP2}
+			{NP1} is on {NP2}</PT>
+	</problem>
+	<problem id="104e" label="neutral" src="CR" exp="towards, on">
+		<ex>John has walked towards the stage
+			John is not on the stage</ex>
+		<ex>John has walked towards the playground
+			John is not on the playground</ex>
+		<ex>The girl has walked towards the rug
+			The girl is not on the rug</ex>
+		<PT>{NP1} has walked towards {NP2}
+			{NP1} is not on {NP2}</PT>
+	</problem>
+	<problem id="104e*" label="entailment" src="LA" exp="towards, on">
+		<ex>John is walking towards the stage
+			John is not on the stage</ex>
+		<ex>John is walking towards the rug
+			John is not on the rug</ex>
+		<ex>Mary is walking towards the playground
+			Mary is not on the playground</ex>
+		<PT>{NP1} is walking towards {NP2}
+			{NP1} is not on {NP2}</PT>
+	</problem>
+	<SR>walk_towards(NP1,NP2); on(NP1,NP2)</SR>
+	<BL>NP2 not in ["mountain", "hill", "bridge"] and diff_values([NP1,NP2])</BL>
+	<note src="LA">Ignore NP2 that doesn't have clear boundaries</note>
+</group>
+
+<group ent_type="directional">
+	<problem id="104f" label="neutral" src="LA" exp="away from, on">
+		<ex>John is walking away from the stage
+			John was on the stage</ex>
+		<ex>John is walking away from the truck
+			John was on the truck</ex>
+		<ex>The boy is walking away from the rooftop
+			The boy was on the rooftop</ex>
+		<PT>{NP1} is walking away from {NP2}
+			{NP1} was on {NP2}</PT>
+	</problem>
+	<problem id="104f*" label="contradiction" src="LA" exp="away from, on">
+		<ex>John has walked away from the stage
+			John is on the stage</ex>
+		<ex>The girl has walked away from the rug
+			The girl is on the rug</ex>
+		<ex>The girl has walked away from the playground
+			The girl is on the playground</ex>
+		<PT>{NP1} has walked away from {NP2}
+			{NP1} is on {NP2}</PT>
+	</problem>
+	<problem id="104g" label="neutral" src="LA" exp="away from, on">
+		<ex>John is walking away from the stage
+			John was not on the stage</ex>
+		<ex>The boy is walking away from the rug
+			The boy was not on the rug</ex>
+		<ex>The dog is walking away from the playground
+			The dog was not on the playground</ex>
+		<PT>{NP1} is walking away from {NP2}
+			{NP1} was not on {NP2}</PT>
+	</problem>
+	<problem id="104g*" label="entailment" src="LA" exp="away from, on">
+		<ex>John has walked away from the stage
+			John is not on the stage</ex>
+		<ex>The cat has walked away from the playground
+			The cat is not on the playground</ex>
+		<ex>The cat has walked away from the rooftop
+			The cat is not on the rooftop</ex>
+		<PT>{NP1} has walked away from {NP2}
+			{NP1} is not on {NP2}</PT>
+	</problem>
+	<SR>walk_away_from(NP1,NP2); on(NP1,NP2)</SR>
+	<FT>NP1[+det]; NP2[+det]</FT>
+	<BL>NP2 not in ["mountain", "hill", "bridge"] and diff_values([NP1,NP2])</BL>
+	<note src="LA">Ignore NP2 that doesn't have clear boundaries</note>
+</group>
+
+<group ent_type="projective">
+	<problem id="104b" label="contradiction" src="CR" exp="under, on">
+		<ex>The key is under the fridge
+			The key is on the fridge</ex>
+		<ex>Mary is under the car
+			Mary is on the car</ex>
+		<ex>The box is under the toy
+			The box is on the toy</ex>
+		<PT>{NP1} is under {NP2}
+			{NP1} is on {NP2}</PT>
+		<SR>on(NP1,NP2)</SR>
+	</problem>
+	<problem id="104c" label="entailment" src="CR" exp="under, on">
+		<ex>The key is under the fridge
+			The key is not on the fridge</ex>
+		<ex>Cindi is under the car
+			Cindi is not on the car</ex>
+		<ex>The key is under the box
+			The key is not on the box</ex>
+		<PT>{NP1} is under {NP2}
+			{NP1} is not on {NP2}</PT>
+		<SR>on(NP1,NP2)</SR>
+	</problem>
+	<problem id="104h" label="contradiction" src="CR" exp="on top of, under">
+		<ex>The key is on top of the fridge
+			The key is under the fridge</ex>
+		<ex>The pencil is on top of the bucket
+			The pencil is under the bucket</ex>
+		<ex>The box is on top of the key
+			The box is under the key</ex>
+		<PT>{NP1} is on top of {NP2}
+			{NP1} is under {NP2}</PT>
+		<SR>on(NP1,NP2)</SR>
+	</problem>
+	<problem id="104i" label="entailment" src="CR" exp="under, below">
+		<ex>The key is under the fridge
+			The key is below the fridge</ex>
+		<ex>The ball is under the bowl
+			The ball is below the bowl</ex>
+		<ex>The pencil is under the wardrobe
+			The pencil is below the wardrobe</ex>
+		<PT>{NP1} is under {NP2}
+			{NP1} is below {NP2}</PT>
+		<SR>above(NP2,NP1)</SR>
+	</problem>
+	<FT>NP1[+det]; NP2[+det]</FT>
+	<SR>under(NP1,NP2)</SR>
+	<BL>NP2 not in ["bridge", "rooftop"] and diff_values([NP1,NP2])</BL>
+	<note src="LA">Ignore combinations of NP1,NP2 such that NP1 can be on and under NP2</note>
+</group>
+
+
+<group ent_type="projective">
+	<problem id="105a" label="neutral" src="LA" exp="front of, behind">
+		<ex>Mary is in front of the school
+			The school is behind Mary</ex>
+		<ex>John is in front of the cupboard
+			The cupboard is behind John</ex>
+		<ex>The hospital is in front of the locker
+			The locker is behind the hospital</ex>
+		<PT>{NP1} is in front of {NP2}
+			{NP2} is behind {NP1}</PT>
+		<SR>front_of(NP1,NP2); behind_of(NP2,NP1); has_front_back(NP1);
+			has_front_back(NP2)</SR>
+	</problem>
+	<problem id="105b" label="contradiction" src="CR" exp="front of, behind">
+		<ex>Mary is in front of the school
+			Mary is behind the school</ex>
+		<ex>The bus is in front of the store
+			The bus is behind the store</ex>
+		<ex>The house is in front of the bus
+			The house is behind the bus</ex>
+		<PT>{NP1} is in front of {NP2}
+			{NP1} is behind {NP2}</PT>
+		<SR>front_of(NP1,NP2); behind_of(NP1,NP2); has_front_back(NP2)</SR>
+	</problem>
+	<problem id="105c" label="entailment" src="LA" exp="front of, behind">
+		<ex>Mary is in front of the school
+			Mary is not behind the school</ex>
+		<ex>The building is in front of the store
+			The building is not behind the store</ex>
+		<ex>The key is in front of the cat
+			The key is not behind the cat</ex>
+		<PT>{NP1} is in front of {NP2}
+			{NP1} is not behind {NP2}</PT>
+		<SR>front_of(NP1,NP2); behind_of(NP1,NP2); has_front_back(NP2)</SR>
+	</problem>
+	<BL>diff_values([NP1,NP2])</BL>
+	<FT>NP1[+det]; NP2[+det]</FT>
+</group>
+
+
+
+<references>
+	<r id="Nam:1995:Diss" year="1995" >
+		<title>The Semantics of Locative Prepositional Phrases in English</title>
+		<authors>Seungho Nam</authors>
+		<venue>Dissertation, University of California</venue>
+	</r>
+	<r id="Zwarts_Winter:2000" year="2000" >
+		<title>Vector Space Semantics: A Model-Theoretic Analysis of Locative Prepositions</title>
+		<authors>Joost Zwarts, Yoad Winter</authors>
+		<venue>Journal of Logic, Language, and Information</venue>
+	</r>
+</references>
+
+</fracas-problems>

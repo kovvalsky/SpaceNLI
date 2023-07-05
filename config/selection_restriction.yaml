@@ -1,0 +1,251 @@
+# yaml file for encoding selection restrictions for verbs
+
+us_city_pn: &US_CITY {Los Angeles, San Diego, San Jose, San Francisco, Fresno, Sacramento, Las Vegas, Henderson, Reno, Sparks, Carson City, Fernley}
+eu_city_pn: &EU_CITY {Amsterdam, Utrecht, Tilburg, Rotterdam, Groningen, Nijmegen, Antwerp, Ghent, Charleroi, Brussels, Bruges, Leuven, Berlin, Hamburg, Munich, Cologne, Stuttgart, Frankfurt, Paris, Marseille, Lyon, Toulouse, Nice, Nantes}
+city_pn: &CITY {<<: *US_CITY, <<: *EU_CITY}
+
+us_state_pn: &US_STATE {California, Nevada}
+eu_state_pn: &EU_STATE {the Netherlands, Belgium, Germany, France}
+state_pn: &STATE {<<: *US_STATE, <<: *EU_STATE}
+
+city_state_pn: &CIT_STA {<<: *CITY, <<: *STATE}
+
+# John, Mary
+name_pn: &PER_NAM { John, Mary, Cindi, Bill, Taylor, Ann, Kate }
+
+generic_person_n: &GENERIC_PERSON { person, man, woman, boy, girl, adult, teenager, kid, child, teacher, student, professor, doctor, driver }
+# nurse, patient, actor, singer, wrter, artist, athlete, musician
+
+person_n: &PER {  <<: *PER_NAM, <<: *GENERIC_PERSON }
+# person_n: &PER { boy, girl, man, woman, <<: *PER_NAM }
+
+# animal_n: &ANIMAL { cat, cow, dog, horse, poodle, tiger }
+animal_n: &ANIMAL { cat, dog, pig, goat, sheep }
+person_animal_n: &PER_ANM { <<: *PER, <<: *ANIMAL }
+food_n: &FOOD { watermelon, pumpkin, cabbage, potatoe, orange, beet, aubergine, apple }
+
+crossable_n: &CROSS  { road, street, line, border, river, bridge }
+
+cloth_n: &CLOTH { t-shirt, jeans, sweater, hoodie, shorts, pants, jacket, coat, suit, cardigan, poncho, blazer, kimono, sweatshirt, sweatpants, costume }
+
+# building_n: &BUILDING { building, church, house, hut, room }
+building_n: &BUILDING { building, house, school, hospital, museum, store, tower, station, church }
+construction_n: &CONSTRUCTION { bridge }
+
+enter_in_n: &ENTER_IN { room, market, forest, tunnel, <<: *BUILDING }
+run_in_n: &RUN_IN { garden, forest, park, street }
+vehicle_n: &VEHICLE { car, helicopter, bus, truck, train, tram, plane }
+be_in_n: &BE_IN { <<: *VEHICLE, <<: *ENTER_IN, <<: *RUN_IN }
+be_on_n: &BE_ON { mountain, rooftop, hill, bridge, playground, rug, stage }
+be_at_n: &BE_AT { house, building, street, garden, forest, park, market, store, bridge, meeting }
+per_be_at_n: &PER_BE_AT {party}
+see_from_n: &SEE_FROM { hill, rooftop, mountain, tower, tree, <<: *BE_IN }
+landmark_n: &LANDMARK { hill, mountain, tree, fence, forest, park, garden, street, market, bridge, <<: *BUILDING }
+on_ground_n: &ON_GROUND { hill, mountain, forest, park, garden }
+
+see_through_n: &SEE_THR { tunnel, window, door, fence }
+body_of_water_n: &WATER { lake, sea, water, river, ocean, pool }
+
+throwable_n: &THROW { ball, key, pencil, stone, toy, watch, pen, dice, book, glasses }
+into_n: &INTO { box, cup, bowl, bucket, container, pot, bin, trash can, glass, barrel }
+fridge_n: &FRIDGE { fridge, cabinet, locker, wardrobe, cupboard, closet }
+
+size_S_n: &SIZE_S { <<: *THROW, <<: *INTO, <<: *ANIMAL, <<: *FOOD }
+size_M_n: &SIZE_M { <<: *PER, <<: *FRIDGE }
+size_L_n: &SIZE_L { <<: *VEHICLE }
+
+physical_object_n: &PHYOBJ { <<: *PER_ANM, <<: *BE_IN, <<: *BE_ON, <<: *SEE_FROM, <<: *INTO, <<: *THROW }
+has_front_back_n: { <<: *PER_ANM, <<: *VEHICLE, <<: *FRIDGE, building, house, school, hospital, store, station, room, window, door }
+
+# >= person & animal, see 98g
+measure_pn: &MEASURE { 6 feet, 6 meters, 10 meters, 10 feet }
+floor_n: &FLOOR { first floor, second floor, ground floor, basement }
+
+# better to model via string constraint
+apos_s_n: *PHYOBJ
+
+# modifier-head combinations
+#little_a: &LITTLE { <<: *PER_ANM, <<: *SEE_FROM, <<: *SEE_THR, <<: *CROSS }
+#big_a: { <<: *LITTLE }
+
+color_a: &COLOR { red, green, blue, yellow, black, white, pink, purple, violet }
+
+# converted into sig['old_mod'] = {<<*PER_ANM}
+MOD_2:
+# - [ {old, young, lonely, fat, thin, blind}, <<: *PER_ANM ]
+# - [ {deaf, skinny, clever, stupid, dark-haired, pink-haired, blond, rich, poor, brave, scared, angry, smiling, laughing, crying, sad, unhappy, happy, funny}, <<: *PER ]
+- [ {narrow, broad, long, short}, <<: *CROSS ]
+# - [ {new, old, renovated, small, ugly, beautiful, large, empty, abandoned, unused, huge}, <<: *BUILDING ]
+# - [ {new, old, small, huge, large, beautiful, empty}, <<: *RUN_IN ]
+- [ {national, public}, {park, forest} ]
+- [ <<: *COLOR, {car, box, cup, bowl, bucket, toy, pencil, ball, house, building} ]
+
+
+# n-ary predicates where the last digit shows the arity
+walk_across_v2:
+- [ *PER_ANM, *CROSS ]
+walk_into_v2: &WALK_INTO_V2
+- [ *PER_ANM, *ENTER_IN ]
+walk_out_of_v2: *WALK_INTO_V2
+enter_v2: *WALK_INTO_V2
+outside_p2: *WALK_INTO_V2
+leave_v2: *WALK_INTO_V2
+walk_to_v2: &WALK_TO_V2
+- [ *PER_ANM, {<<: *PER_ANM, <<: *BE_IN, <<: *BE_ON, <<: *FRIDGE, <<: *LANDMARK} ]
+walk_v1: &WALK_V1
+- [ *PER_ANM ]
+walk_away_from_v2: *WALK_TO_V2
+walk_towards_v2: *WALK_TO_V2
+
+drive_around_by_through_v1:
+- [ { tunnel, city, park, garden, forest } ]
+- [ *CIT_STA ]
+
+meet_v2:
+- [ *PER_ANM, *PER_ANM ]
+
+run_in_v2:
+- [ *PER_ANM, *ENTER_IN ]
+- [ *PER_ANM, *RUN_IN ]
+want_v1:
+- [ *PER ]
+stand_v1:
+- [ *PER_ANM ]
+- [ { house, building, tower, tree } ]
+- [ *VEHICLE ]
+be_with_v2:
+- [ *PER_ANM, *PER_ANM ]
+# - [ *PER_ANM, *SIZE_S ]
+- [ *SIZE_S, *PER_ANM ]
+
+be_at_v2:
+- [ *PER_ANM, *BE_AT ]
+
+hug_v2:
+- [ *PER, *PER_ANM ]
+mention_v2:
+- [ *PER, *PHYOBJ ]
+criticize_v2:
+- [ *PER, *PER ]
+see_v2:
+- [ *PER_ANM, *PHYOBJ ]
+see_from_v3:
+- [ *PER_ANM, *PHYOBJ, *SEE_FROM ]
+see_through_v3:
+- [ *PER_ANM, *PHYOBJ, *SEE_THR ]
+# see_in3:
+# - prod1: [ <<: *PER_ANM, <<: *PHYOBJ, <<: *BE_IN ]
+invisible_to_v2:
+- [ *PHYOBJ, *PER_ANM ]
+in_p2: &BE_IN_P2
+- [ *PER_ANM, *BE_IN ]
+- [ { car, church, house, hut, tree, tower, building }, { forest, park } ]
+- [ { garden }, { church, park } ]
+- [ { church }, { garden, forest } ]
+- [ *THROW, {<<: *INTO, <<: *FRIDGE } ] # big can be thrown into small
+- [ *INTO, *FRIDGE ]
+inside_p2: *BE_IN_P2
+out_of_p2: *BE_IN_P2
+on_top_of_p2: &ON_TOP_OF
+- [ *PER_ANM, {<<: *BE_ON, <<: *BUILDING, car, bus, truck, tree, bridge} ]
+- [ {car}, *PER ]
+- [ *VEHICLE, {bridge} ]
+- [ *THROW, { <<: *INTO, <<: *FRIDGE } ]
+- [ *INTO, {<<: *FRIDGE, <<: *THROW} ]
+- [ *ANIMAL, *ANIMAL ]
+on_p2: &ON
+- [ *PER_ANM, {<<: *BE_ON, car, bus, truck} ]
+- [ *VEHICLE, {bridge} ]
+- [ *THROW, { <<: *INTO, <<: *FRIDGE } ]
+- [ *INTO, {<<: *FRIDGE, <<: *THROW} ]
+under_p2: &UNDER_P2
+- [ *SIZE_S, {<<: *INTO, <<: *FRIDGE, bridge, <<: *VEHICLE } ]
+- [ *PER, {car, bus, truck, tree, bridge} ]
+- [ *SIZE_L, { bridge } ]
+- [ *INTO, *THROW ]
+# below_p2: *UNDER_P2
+at_p2:
+- [ *PER_ANM, *BE_AT ]
+- [ *PER, *PER_BE_AT ]
+absent_in_v2: *BE_IN_P2
+abandon_v2:
+- [ *PER, *PER_ANM ]
+- [ *PER, *THROW ]
+live_near_v2:
+- [ *PER, { <<: *LANDMARK, <<: *WATER } ]
+take_v2: &TAKE_V2
+- [ *PER, *PER_ANM ]
+- [ *PER, *SIZE_S ]
+put_v2: *TAKE_V2
+bring_from_v3: #3rd arg should be smth you entre/are inside
+- [ *PER, *SIZE_S, {<<: *ENTER_IN, <<: *RUN_IN, <<: *BE_AT} ]
+leave_through_v3:
+- [ *PER_ANM, *BUILDING, {door, window} ]
+opposite_side_of_p1:
+- [ *SEE_THR ]
+
+# takes into account that Ground shoudln't be too small comapred to the Figure
+# e.g., "behind/front_of(hospital,locker)" is blocked
+behind_of_p2: &BEHIND_OF_P2
+- [ {<<: *SIZE_S, <<: *SIZE_M, <<: *SIZE_L}, {window, door} ]
+- [ {<<: *SIZE_S, <<: *SIZE_M, <<: *SIZE_L, <<: *PER_ANM},
+    {<<: *SIZE_S, <<: *SIZE_M, <<: *SIZE_L, <<: *PER_ANM, <<: *BUILDING} ]
+- [ *BUILDING, {<<: *SIZE_M, <<: *SIZE_L, <<: *BUILDING} ]
+front_of_p2: *BEHIND_OF_P2
+
+between_of_p2: &BETWEEN_OF_P2
+# - [ {<<: *PER_ANM}, {<<: *PER_ANM} ]
+# - [ {<<: *SIZE_S}, {<<: *SIZE_S} ]
+# - [ {<<: *SIZE_M}, {<<: *SIZE_M} ]
+- [ {tree, fence, trash can, <<: *BUILDING, <<: *PER_ANM, <<: *VEHICLE},
+    {tree, fence, trash can, <<: *BUILDING, <<: *PER_ANM, <<: *VEHICLE} ]
+
+near_p2:
+- *BE_IN_P2 # preds_from_yaml script unpacks the alias and unifies with other items
+- *BETWEEN_OF_P2
+
+part_of_p2:
+- [ {door, window}, *BUILDING ]
+k_above_p2: # k_X extension is automatically included in X too
+- [ {first floor, second floor}, {ground floor, basement} ]
+- [ {second floor}, {first floor} ]
+- [ {ground floor}, {basement} ]
+- [ {rooftop}, {door, window} ]
+above_p2:
+- [ {window}, {door} ]
+- [ {tunnel, helicopter}, *WATER ]
+- [ {helicopter}, {rooftop, door, window, <<: *BUILDING} ]
+- [ { <<: *FOOD, <<: *THROW, <<: *INTO }, { <<: *FOOD, <<: *THROW, <<: *INTO } ]
+- [ { <<: *FOOD, <<: *THROW, <<: *FRIDGE }, { <<: *FOOD, <<: *THROW, <<: *FRIDGE } ]
+# - [ *PER_ANM, { <<: *VEHICLE, <<: *FRIDGE } ]
+# - [ { <<: *VEHICLE, <<: *FRIDGE }, *PER_ANM ]
+# reflexive cases are prevented with NP1 != NP2 assumption
+far_from_p2: &FAR_FROM_P2
+- [ { <<: *VEHICLE, <<: *BE_IN }, { <<: *VEHICLE, <<: *BE_IN } ]
+- [ { <<: *SIZE_S, <<: *SIZE_M }, { <<: *SIZE_S, <<: *SIZE_M } ]
+- [ { <<: *SIZE_L, <<: *SIZE_M }, { <<: *SIZE_L, <<: *SIZE_M } ]
+opposite_p2: *FAR_FROM_P2
+throw_into_v3:
+- [ *PER, *THROW, *INTO ]
+throw_at_v3:
+- [ *PER, *THROW, *INTO ]
+take_away_from_v3:
+- [ *PER, *SIZE_S, *PER ]
+- [ *PER, *THROW, *PER_ANM ]
+hide_v2:
+- [ *PER, *SIZE_S ]
+go_into_v2:
+- [ *THROW, *INTO ]
+fall_out_of_IMP_be_inside_v2:
+- [ *PER_ANM, {window, boat, bed, hammock, <<: *VEHICLE} ]
+fall_out_of_IMP_be_in_v2:
+- [ *PER_ANM, {window, boat, tree, bed, hammock, <<: *VEHICLE} ]
+
+
+k_city_in_state_p2: # k_X extension is automatically included in X too
+- [ {Los Angeles, San Diego, San Jose, San Francisco, Fresno, Sacramento}, {California} ]
+- [ {Las Vegas, Henderson, Reno, Sparks, Carson City, Fernley}, {Nevada} ]
+- [ {Amsterdam, Utrecht, Tilburg, Rotterdam, Groningen, Nijmegen}, {the Netherlands} ]
+- [ {Antwerp, Ghent, Charleroi, Brussels, Bruges, Leuven}, {Belgium} ]
+- [ {Berlin, Hamburg, Munich, Cologne, Stuttgart, Frankfurt}, {Germany} ]
+- [ {Paris, Marseille, Lyon, Toulouse, Nice, Nantes}, {France} ]

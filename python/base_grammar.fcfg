@@ -1,0 +1,84 @@
+## NLTK-style feature-based CFG
+
+% start NP
+
+#####################
+# Grammar Rules
+
+#-------------------------
+# S rules
+#-------------------------
+#S -> NP[n=?n] VP[+h, n=?n]
+
+#-------------------------
+# NP rules
+#-------------------------
+# NP with a determiner
+NP[dep=(?n+?dt), det=?d] -> DT[dep=?dt, det=?d]  N[dep=?n]
+
+# proper names are NPs
+NP[dep=(?pn), det=?d] -> PN[dep=?pn, det=?d]
+
+# bare plurals
+# NP[dep=?n] -> N[dep=?n]
+
+# N bar<=1
+N[dep=?n] -> NOUN[dep=?n]
+# simplification
+# N[dep=(?n+?a)] -> A[dep=?a] N[dep=?n]
+
+
+
+#-------------------------
+# VP rules
+#-------------------------
+#VP[t=?t, plr=?n] -> IV[+h, t=?t, plr=?n]
+#VP[t=?t, plr=?n] -> TV[+h, t=?t, plr=?n] NP
+#VP[t=?t, plr=?n] -> DV[+h, t=?t, plr=?n] NP NP
+
+#####################
+# Lexical Rules
+#####################
+#-------------------------
+# Determiners
+#-------------------------
+#DT[-plr,+det]  -> 'this'
+#DT[+plr,+det]  -> 'these'
+DT[+det, dep='the']       -> 'the'
+# simplification
+# DT[-plr,+cnt,-vow,-det, dep='a'] -> 'a'
+# DT[-plr,+cnt,+vow,-det, dep='an'] -> 'an'
+
+#-------------------------
+# Proper Names
+#-------------------------
+#PN[+ani,+cnt,+det,-plr] -> 'John' | 'Mary'
+
+#-------------------------
+# Nouns
+#-------------------------
+#N[-plr,+cnt,+ani,+vow,-h] -> 'animal'
+
+#N[-plr,+cnt,+ani,-vow,+h] -> 'boy'
+#N[-plr,+cnt,+ani,-vow,-h] -> 'boy'
+
+#N[+plr,+cnt,+ani,+vow,+h] -> 'animals'
+#N[+plr,+cnt,+ani,+vow,-h] -> 'animals'
+
+#N[+plr,+cnt,-ani,-vow,+h] -> 'rooms' | 'parks' | 'trees' | 'streets'
+#N[+plr,+cnt,-ani,-vow,-h] -> 'rooms' | 'parks' | 'trees' | 'streets'
+
+#N[-plr,+cnt,-ani,-vow,+h] -> 'room'|'park'|'tree'|'street'|'garden'|'house'|'window'|'door'
+#N[-plr,+cnt,-ani,-vow,-h] -> 'room'|'park'|'tree'|'street'|'garden'|'house'|'window'|'door'
+
+#N[-plr,-cnt,-ani,-vow,+h] -> 'water'
+#N[-plr,-cnt,-ani,-vow,-h] -> 'water'
+
+
+
+#-------------------------
+# Verbs
+#-------------------------
+#IV[t=ps,SEM='cross',VAL=1] -> 'walked'
+
+#TV[t=ps,VAL=2] -> 'saw'
